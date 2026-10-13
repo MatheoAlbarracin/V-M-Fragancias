@@ -1,1 +1,1014 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>NOIR — Perfumería</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --black: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --cream: #f0ead6;
+    --muted: #888;
+    --border: rgba(201,168,76,0.18);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── LOGIN OVERLAY ── */
+  .login-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .login-overlay.hidden { display: none; }
+
+  .login-box {
+    width: 100%;
+    max-width: 380px;
+    padding: 0 24px;
+  }
+
+  .login-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    letter-spacing: 10px;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .login-sub {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-bottom: 48px;
+  }
+
+  .login-field {
+    margin-bottom: 16px;
+  }
+
+  .login-field label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .login-field input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--cream);
+    padding: 14px 16px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .login-field input:focus { border-color: var(--gold); }
+  .login-field input::placeholder { color: var(--muted); font-size: 12px; }
+
+  .login-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px;
+    font-size: 12px;
+    letter-spacing: 4px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .login-btn:hover { background: var(--gold-light); }
+
+  .login-error {
+    color: #e05555;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 16px;
+    letter-spacing: 1px;
+    min-height: 16px;
+  }
+
+  .login-sql {
+    margin-top: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--gold);
+    padding: 14px 16px;
+    font-family: monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .login-sql .kw { color: #7ca8d4; }
+  .login-sql .str { color: #c5a84c; }
+  .login-sql .val { color: #88c988; }
+
+  .auth-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(201,168,76,0.18);
+  }
+  .auth-tab {
+    flex: 1;
+    background: none;
+    border-bottom: 2px solid transparent;
+    color: #888;
+    padding: 10px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .auth-tab-active {
+    border-bottom-color: #c9a84c !important;
+    color: #c9a84c !important;
+  }
+
+  .login-success {
+    color: #5cb85c;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 16px;
+    letter-spacing: 1px;
+    min-height: 16px;
+  }
+
+  /* ── PRODUCT IMAGE ── */
+  .product-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background: #0d0d0d;
+    margin-bottom: 24px;
+    padding: 16px;
+  }
+  .product-img-wrap {
+    background: #0d0d0d;
+    margin: -40px -32px 24px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .product-img-wrap img {
+    height: 180px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+  }
+  .product-card:hover .product-img-wrap img { transform: scale(1.05); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 2px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+
+  .logout-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: color 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .logout-btn:hover { color: var(--cream); }
+
+  .cart-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--cream);
+    padding: 10px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cart-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  .cart-count {
+    background: var(--gold);
+    color: var(--black);
+    font-size: 10px;
+    font-weight: 500;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .cart-count.visible { display: flex; }
+
+  /* ── HERO ── */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(201,168,76,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow { font-size: 11px; letter-spacing: 5px; color: var(--gold); margin-bottom: 28px; opacity: 0.8; }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(72px, 12vw, 140px);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    color: var(--cream);
+    margin-bottom: 32px;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+
+  .hero-sub { font-size: 13px; letter-spacing: 2px; color: var(--muted); max-width: 340px; line-height: 1.8; margin-bottom: 48px; }
+
+  .hero-cta {
+    display: inline-block;
+    padding: 14px 40px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    transition: background 0.25s, color 0.25s;
+  }
+  .hero-cta:hover { background: var(--gold); color: var(--black); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.35;
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+  .hero-scroll::after {
+    content: '';
+    width: 1px; height: 40px;
+    background: var(--gold);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(1); opacity: 0.35; }
+    50% { transform: scaleY(0.3); opacity: 0.1; }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 48px; }
+
+  .section-label { font-size: 10px; letter-spacing: 5px; color: var(--gold); margin-bottom: 16px; opacity: 0.7; }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 48px;
+    max-width: 500px;
+  }
+
+  /* ── CATALOG ── */
+  #catalogo { background: var(--surface); }
+
+  .catalog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 56px;
+  }
+
+  .filter-tabs { display: flex; gap: 4px; }
+
+  .filter-tab {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--muted);
+    padding: 8px 16px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .filter-tab.active, .filter-tab:hover { border-color: var(--border); color: var(--cream); }
+  .filter-tab.active { color: var(--gold); border-color: var(--gold); }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px;
+  }
+
+  .product-card {
+    background: var(--black);
+    padding: 40px 32px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .product-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.4s ease;
+  }
+  .product-card:hover::after { width: 100%; }
+  .product-card:hover { background: var(--surface2); }
+
+  .product-tag { font-size: 9px; letter-spacing: 3px; color: var(--gold); margin-bottom: 24px; opacity: 0.7; }
+  .product-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; color: var(--cream); }
+  .product-brand { font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-bottom: 24px; }
+  .product-desc { font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; min-height: 54px; }
+
+  .product-footer { display: flex; justify-content: space-between; align-items: center; }
+
+  .product-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); }
+
+  .add-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--cream);
+    width: 36px; height: 36px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .add-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+
+  /* ── DECANTS ── */
+  #decants { background: var(--black); }
+
+  .decants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2px;
+  }
+
+  .decant-card {
+    background: var(--surface);
+    padding: 28px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+  }
+  .decant-card:hover { background: var(--surface2); }
+
+  .decant-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; margin-bottom: 4px; }
+  .decant-ml { font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+  .decant-right { text-align: right; }
+  .decant-price { font-size: 16px; color: var(--gold); font-family: 'Cormorant Garamond', serif; margin-bottom: 8px; }
+
+  .decant-add {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--cream);
+    width: 30px; height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .decant-add:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+
+  /* ── ABOUT ── */
+  #nosotros {
+    background: var(--surface);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .about-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.3;
+    color: var(--cream);
+    border-left: 1px solid var(--gold);
+    padding-left: 32px;
+  }
+
+  .about-text p { font-size: 14px; line-height: 1.9; color: var(--muted); margin-bottom: 20px; max-width: 460px; }
+
+  .about-stats { display: flex; gap: 40px; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border); }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+
+  /* ── CONTACTO ── */
+  #contacto { background: var(--black); text-align: center; }
+  #contacto .section-title { margin: 0 auto 16px; text-align: center; }
+  .contact-sub { font-size: 13px; color: var(--muted); margin-bottom: 48px; letter-spacing: 1px; }
+  .contact-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  .contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 36px;
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 3px;
+    transition: all 0.25s;
+  }
+  .contact-btn.primary { background: var(--gold); color: var(--black); font-weight: 500; }
+  .contact-btn.primary:hover { background: var(--gold-light); }
+  .contact-btn.secondary { border: 1px solid var(--border); color: var(--cream); }
+  .contact-btn.secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; letter-spacing: 6px; color: var(--gold); }
+  .footer-copy { font-size: 11px; color: var(--muted); }
+
+  /* ── CART PANEL ── */
+  .cart-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+  .cart-panel {
+    position: fixed;
+    top: 0; right: 0;
+    width: 400px;
+    height: 100vh;
+    background: var(--surface);
+    z-index: 201;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--border);
+  }
+  .cart-panel.open { transform: translateX(0); }
+
+  .cart-header {
+    padding: 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .cart-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; letter-spacing: 2px; }
+  .cart-close { background: none; border: none; color: var(--muted); font-size: 28px; cursor: pointer; transition: color 0.2s; line-height: 1; padding: 0; }
+  .cart-close:hover { color: var(--cream); }
+
+  .cart-items { flex: 1; overflow-y: auto; padding: 16px 32px; }
+
+  .cart-empty { text-align: center; padding: 80px 0; color: var(--muted); }
+  .cart-empty-icon { font-size: 36px; margin-bottom: 16px; opacity: 0.3; }
+  .cart-empty p { font-size: 13px; letter-spacing: 1px; }
+
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .cart-item-info { flex: 1; min-width: 0; }
+  .cart-item-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cart-item-detail { font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+
+  .cart-item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+  .cart-item-price { font-size: 15px; color: var(--gold); font-family: 'Cormorant Garamond', serif; }
+
+  .cart-qty { display: flex; align-items: center; gap: 10px; }
+
+  .qty-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--cream);
+    width: 26px; height: 26px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Inter', sans-serif;
+  }
+  .qty-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .qty-btn.delete:hover { border-color: #e05555; color: #e05555; }
+
+  .qty-num { font-size: 13px; min-width: 20px; text-align: center; }
+
+  .cart-footer {
+    padding: 24px 32px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .cart-total-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; }
+  .cart-total-label { font-size: 12px; letter-spacing: 2px; color: var(--muted); }
+  .cart-total-price { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold); }
+
+  .checkout-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px;
+    font-size: 12px;
+    letter-spacing: 4px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: background 0.2s;
+    margin-bottom: 10px;
+  }
+  .checkout-btn:hover { background: var(--gold-light); }
+
+  .whatsapp-checkout {
+    width: 100%;
+    background: none;
+    border: 1px solid #25D366;
+    color: #25D366;
+    padding: 13px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .whatsapp-checkout:hover { background: #25D366; color: var(--black); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--cream);
+    padding: 12px 24px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    z-index: 400;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast span { color: var(--gold); }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section { padding: 72px 24px; }
+    #nosotros { grid-template-columns: 1fr; gap: 40px; padding: 72px 24px; }
+    .cart-panel { width: 100%; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .catalog-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">NOIR</a>
+  <ul class="nav-links">
+    <li><a href="#catalogo">Catálogo</a></li>
+    <li><a href="#decants">Decants</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <div class="nav-right">
+
+    <button class="cart-btn" id="cartToggleBtn">
+      Carrito
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Fragancias de autor</p>
+  <h1 class="hero-title">El olor<br>que <em>te define</em></h1>
+  <p class="hero-sub">Perfumes sellados y decants de las casas más buscadas del mundo</p>
+  <a href="#catalogo" class="hero-cta">Ver catálogo</a>
+  <div class="hero-scroll">scroll</div>
+</section>
+
+<!-- CATÁLOGO -->
+<section id="catalogo">
+  <div class="catalog-header">
+    <div>
+      <p class="section-label">Colección</p>
+      <h2 class="section-title">Perfumes sellados</h2>
+    </div>
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab active" data-filter="todos">Todos</button>
+      <button class="filter-tab" data-filter="hombre">Hombre</button>
+      <button class="filter-tab" data-filter="mujer">Mujer</button>
+      <button class="filter-tab" data-filter="unisex">Unisex</button>
+    </div>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- DECANTS -->
+<section id="decants">
+  <p class="section-label">Probá antes de comprar</p>
+  <h2 class="section-title">Decants 5ml</h2>
+  <div class="decants-grid" id="decantsGrid"></div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div class="about-quote">"El perfume es la forma más intensa del recuerdo."</div>
+  <div class="about-text">
+    <p>Somos dos apasionados de las fragancias que decidimos compartir lo que más amamos. Cada perfume que elegimos pasó por nuestra nariz decenas de veces antes de llegar a vos.</p>
+    <p>Trabajamos con marcas como Lattafa, Maison Alhambra, Armaf y muchas más. Todos los productos son 100% originales y sellados de fábrica.</p>
+    <div class="about-stats">
+      <div><div class="stat-num">+40</div><div class="stat-label">fragancias</div></div>
+      <div><div class="stat-num">100%</div><div class="stat-label">originales</div></div>
+      <div><div class="stat-num">2</div><div class="stat-label">personas reales</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <p class="section-label">Hablemos</p>
+  <h2 class="section-title">¿Dudas sobre una fragancia?</h2>
+  <p class="contact-sub">Te asesoramos sin compromiso. Mandanos un mensaje.</p>
+  <div class="contact-buttons">
+    <a href="https://wa.me/5491139457935" target="_blank" class="contact-btn primary">WhatsApp</a>
+    <a href="https://www.instagram.com/retroo.sport/" target="_blank" class="contact-btn secondary">Instagram</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NOIR</div>
+  <div class="footer-copy">© 2025 · Buenos Aires, Argentina</div>
+</footer>
+
+<!-- CART -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <div class="cart-title">Tu carrito</div>
+    <button class="cart-close" id="cartCloseBtn">×</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-price" id="cartTotal">$0</span>
+    </div>
+    <button class="checkout-btn">Confirmar pedido</button>
+    <button class="whatsapp-checkout" id="waBtn">Pedir por WhatsApp</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Agregado: <span id="toastName"></span></div>
+
+<script>
+// ── TIPO DE CAMBIO — modificá este número cuando cambie el dólar ──
+let USD = 1570;
+
+// ── DATA (precios en USD, se convierten a ARS automático) ─────────
+const products = [
+  { id:1,  name:'9PM',                          brand:'Afnan',          tag:'HOMBRE', desc:'Oriental amaderado con notas de bergamota, cardamomo y pachulí. Ideal para la noche.',  cat:'hombre', img:'img/9PM.jpeg' },
+  { id:2,  name:'9PM Elixir',                   brand:'Afnan',          tag:'HOMBRE', desc:'Versión más intensa y oscura del 9PM clásico. Oud, almizcle y madera de cachemira.',    cat:'hombre', img:'img/9PM_Elixir.jpeg' },
+  { id:3,  name:'9PM Night Out',                brand:'Afnan',          tag:'HOMBRE', desc:'Versión fresca y vibrante del 9PM. Perfecto para salidas nocturnas.',                   cat:'hombre', img:'img/9PM_NIGHT_OUT.jpeg' },
+  { id:4,  name:'Odyssey Mandarin Sky Elixir',  brand:'Odyssey',          tag:'UNISEX', desc:'Cítrico y especiado con notas de mandarina, pimienta rosa y sándalo cremoso.',          cat:'unisex', img:'img/MANDARIN_SKY_ELIXIR.jpeg' },
+  { id:5,  name:'Hawas For Him',                brand:'Rasasi',         tag:'HOMBRE', desc:'Acuático marino con cardamomo, menta y madera. Fresco, elegante y duradero.',           cat:'hombre', img:'img/HAWAS_FORHIM.jpeg' },
+  { id:6,  name:'Hawas Malibu',                 brand:'Rasasi',         tag:'HOMBRE', desc:'Versión tropical del Hawas. Notas de coco, brisa marina y frutas exóticas.',            cat:'hombre', img:'img/HAWAS_MALIBU.jpg' },
+  { id:7,  name:'Lattafa The Kingdom',          brand:'Lattafa',        tag:'HOMBRE', desc:'Oud amaderado con especias orientales. Imponente, cálido y con gran proyección.',       cat:'hombre', img:'img/THE_KING.jpg' },
+  { id:8,  name:'Honor And Glory',              brand:'Afnan',          tag:'HOMBRE', desc:'Fresco y especiado con bergamota, lavanda y base amaderada. Versátil para el día.',     cat:'hombre', img:'img/HONOR_AND_GL.jpg' },
+  { id:9,  name:'Al Haramain Amber Oud Gold',   brand:'Al Haramain',    tag:'UNISEX', desc:'Ámbar y oud en su máxima expresión. Rico, cálido y con una estela interminable.',       cat:'unisex', img:'img/AMBER_OUD_GO.jpg' },
+  { id:10, name:'Al Haramain Amber Oud Gold 999',brand:'Al Haramain',   tag:'UNISEX', desc:'Edición especial del Amber Oud Gold. Más oscuro y profundo, con notas de resina.',      cat:'unisex', img:'img/AMBER_OUD_GO999.jpg' },
+  { id:11, name:'Al Haramain Dubai Night',      brand:'Al Haramain',    tag:'HOMBRE', desc:'Floral amaderado con jazmín, rosa y base de sándalo. Sofisticado y sensual.',           cat:'hombre', img:'img/AMBER_OUD_DUBAI_N.jpg' },
+  { id:12, name:'Armaf Club De Nuit Elixir',    brand:'Armaf',          tag:'HOMBRE', desc:'Frutal especiado con notas de piña, abedul y almizcle. Inspirado en los clásicos.',     cat:'hombre', img:'img/CLUB_DE_NUIT_ELIXIR.jpg' },
+  { id:13, name:'Fakhar Silver',                brand:'Lattafa',        tag:'HOMBRE', desc:'Fresco y limpio con bergamota, lavanda y cedro. Ideal para el día a día.',              cat:'hombre', img:'img/FAKHAR_SILVER.jpg' },
+  { id:14, name:'Qaed Al Fursan',               brand:'Lattafa',        tag:'UNISEX', desc:'Oriental especiado con notas de azafrán, rosa y oud. Misterioso y envolvente.',         cat:'unisex', img:'img/QAED.jpg' },
+  { id:15, name:'Maison Alhambra Salvo Elixir', brand:'Maison Alhambra',tag:'HOMBRE', desc:'Amaderado intenso con notas de vetiver, cedro y almizcle. Elegante y moderno.',        cat:'hombre', img:'img/SALVO_ELIXIR.jpg' },
+  { id:16,  name:'Hawas Ice', brand:'Rasasi', tag:'HOMBRE', desc:'Versión helada del Hawas. Notas de menta ártica, almizcle marino y madera fría. Refrescante e impactante.',           cat:'hombre', img:'img/HAWAS_ICE.avif' },
+  { id:17,  name:'Odyssey Aqua',  brand:'Odyssey', tag:'UNISEX', desc:'Acuático fresco con notas de bergamota, algas marinas y base amaderada. Ideal para el día a día.', cat:'unisex', img:'img/ODYSSEY_AQUA.avif' },
+];
+
+// precio en ARS calculado dinámicamente
+function arsPrice(usd) { return Math.round(usd * USD * 2); } // x2 = margen de venta
+
+const decants = [
+  { id:101, name:'9PM',                        brand:'Afnan',       },
+  { id:102, name:'9PM Elixir',                 brand:'Afnan',        },
+  { id:103, name:'Hawas For Him',              brand:'Rasasi',       },
+  { id:104, name:'Al Haramain Amber Oud Gold', brand:'Al Haramain',  },
+  { id:105, name:'Armaf Club De Nuit Elixir',  brand:'Armaf',        },
+  { id:106, name:'Fakhar Silver',              brand:'Lattafa',      },
+  { id:107, name:'Qaed Al Fursan',             brand:'Lattafa',       },
+  { id:108, name:'Lattafa The Kingdom',        brand:'Lattafa',       },
+];
+
+
+
+// ── CART STATE ────────────────────────────────────────────────────
+let cart = [];
+
+// ── RENDER PRODUCTS ───────────────────────────────────────────────
+function renderProducts(filter) {
+  const grid = document.getElementById('productGrid');
+  const list = filter === 'todos' ? products : products.filter(p => p.cat === filter);
+  grid.innerHTML = list.map(p => {
+    const ars = arsPrice(p.usd);
+    return `
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
+      </div>
+      <div class="product-tag">${p.tag}</div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-brand">${p.brand}</div>
+      <div class="product-desc">${p.desc}</div>
+      <div class="product-footer">
+        <div>
+          <div class="product-price">$${ars.toLocaleString('es-AR')}</div>
+          <div style="font-size:10px; color:var(--muted); letter-spacing:1px">USD ${p.usd}</div>
+        </div>
+        <button class="add-btn" data-id="${p.id}" data-name="${p.name}" data-brand="${p.brand}" data-price="${ars}" data-type="Sellado">+</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderDecants() {
+  document.getElementById('decantsGrid').innerHTML = decants.map(d => {
+    const ars = Math.round(d.usd * USD * 1.8);
+    return `
+    <div class="decant-card">
+      <div>
+        <div class="decant-name">${d.name}</div>
+        <div class="decant-ml">${d.brand} · 5ml</div>
+      </div>
+      <div class="decant-right">
+        <div class="decant-price">$${ars.toLocaleString('es-AR')}</div>
+        <div style="font-size:10px; color:var(--muted); text-align:right">USD ${d.usd}</div>
+        <button class="decant-add" data-id="${d.id}" data-name="${d.name}" data-brand="${d.brand}" data-price="${ars}" data-type="Decant 5ml">+</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── EVENT DELEGATION para agregar al carrito ──────────────────────
+document.getElementById('productGrid').addEventListener('click', e => {
+  const btn = e.target.closest('[data-id]');
+  if (!btn) return;
+  addToCart(+btn.dataset.id, btn.dataset.name, btn.dataset.brand, +btn.dataset.price, btn.dataset.type);
+});
+
+document.getElementById('decantsGrid').addEventListener('click', e => {
+  const btn = e.target.closest('[data-id]');
+  if (!btn) return;
+  addToCart(+btn.dataset.id, btn.dataset.name, btn.dataset.brand, +btn.dataset.price, btn.dataset.type);
+});
+
+// ── EVENT DELEGATION para carrito (qty + delete) ──────────────────
+document.getElementById('cartItems').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+
+  const id = +btn.dataset.id;
+
+  if (btn.classList.contains('qty-plus')) {
+    const item = cart.find(i => i.id === id);
+    if (item) { item.qty++; updateCartUI(); }
+  }
+
+  if (btn.classList.contains('qty-minus')) {
+    const item = cart.find(i => i.id === id);
+    if (item) {
+      item.qty--;
+      if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+      updateCartUI();
+    }
+  }
+
+  if (btn.classList.contains('qty-delete')) {
+    cart = cart.filter(i => i.id !== id);
+    updateCartUI();
+  }
+});
+
+// ── CART LOGIC ────────────────────────────────────────────────────
+function addToCart(id, name, brand, price, type) {
+  const existing = cart.find(i => i.id === id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ id, name, brand, price, type, qty: 1 });
+  }
+  updateCartUI();
+  showToast(name);
+}
+
+function updateCartUI() {
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+
+  // badge
+  const badge = document.getElementById('cartCount');
+  badge.textContent = count;
+  badge.classList.toggle('visible', count > 0);
+
+  const itemsEl  = document.getElementById('cartItems');
+  const footerEl = document.getElementById('cartFooter');
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = `
+      <div class="cart-empty">
+        <div class="cart-empty-icon">◇</div>
+        <p>Tu carrito está vacío</p>
+      </div>`;
+    footerEl.style.display = 'none';
+    return;
+  }
+
+  footerEl.style.display = 'block';
+  document.getElementById('cartTotal').textContent = '$' + total.toLocaleString('es-AR');
+
+  itemsEl.innerHTML = cart.map(i => `
+    <div class="cart-item">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-detail">${i.brand} · ${i.type}</div>
+      </div>
+      <div class="cart-item-right">
+        <div class="cart-item-price">$${(i.price * i.qty).toLocaleString('es-AR')}</div>
+        <div class="cart-qty">
+          <button class="qty-btn qty-delete delete" data-id="${i.id}" title="Eliminar">✕</button>
+          <button class="qty-btn qty-minus" data-id="${i.id}">−</button>
+          <span class="qty-num">${i.qty}</span>
+          <button class="qty-btn qty-plus" data-id="${i.id}">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── CART TOGGLE ───────────────────────────────────────────────────
+function toggleCart() {
+  document.getElementById('cartPanel').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+document.getElementById('cartToggleBtn').addEventListener('click', toggleCart);
+document.getElementById('cartCloseBtn').addEventListener('click', toggleCart);
+document.getElementById('cartOverlay').addEventListener('click', toggleCart);
+
+// ── WHATSAPP ──────────────────────────────────────────────────────
+document.getElementById('waBtn').addEventListener('click', () => {
+  if (!cart.length) return;
+  const lines = cart.map(i => `• ${i.name} (${i.type}) x${i.qty} — $${(i.price * i.qty).toLocaleString('es-AR')}`);
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const msg = `Hola! Quiero hacer el siguiente pedido:\n\n${lines.join('\n')}\n\n*Total: $${total.toLocaleString('es-AR')}*`;
+  window.open(`https://wa.me/5491139457935?text=${encodeURIComponent(msg)}`, '_blank');
+});
+
+// ── FILTER TABS ───────────────────────────────────────────────────
+let currentFilter = 'todos';
+document.getElementById('filterTabs').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-tab');
+  if (!btn) return;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.filter;
+  renderProducts(currentFilter);
+});
+
+// ── TOAST ─────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(name) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastName').textContent = name;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+renderProducts('todos');
+renderDecants();
+updateCartUI();
+</script>
+</body>
+</html>
 
