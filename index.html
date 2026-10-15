@@ -4,9 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>V&M — Fragancias</title>
+<link rel="icon" type="image/png" href="logo.jpeg">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
+  .nav-logo-img {
+  height: 40px; /* Ajustá este valor según el alto de tu logo */
+  width: auto;
+  object-fit: contain;
+  display: block;
+  }
+  
   :root {
     --gold: #c9a84c;
     --gold-light: #e8c97a;
@@ -796,14 +804,13 @@ const products = [
   { id:7,  name:'Lattafa The Kingdom',          brand:'Lattafa',        tag:'HOMBRE', usd:41.60 , desc:'Oud amaderado con especias orientales. Imponente, cálido y con gran proyección.',       cat:'hombre', img:'THE_KING.jpg' },
   { id:8,  name:'Honor And Glory',              brand:'Afnan',          tag:'HOMBRE', usd:32.00 , desc:'Fresco y especiado con bergamota, lavanda y base amaderada. Versátil para el día.',     cat:'hombre', img:'HONOR_AND_GL.jpg' },
   { id:9,  name:'Al Haramain Amber Oud Gold',   brand:'Al Haramain',    tag:'UNISEX', usd:75.50 , desc:'Ámbar y oud en su máxima expresión. Rico, cálido y con una estela interminable.',       cat:'unisex', img:'AMBER_OUD_GO.jpg' },
-  { id:10, name:'Al Haramain Amber Oud Gold 999',brand:'Al Haramain',   tag:'UNISEX', usd:76.00 , desc:'Edición especial del Amber Oud Gold. Más oscuro y profundo, con notas de resina.',      cat:'unisex', img:'AMBER_OUD_GO999.jpg' },
-  { id:11, name:'Al Haramain Dubai Night',      brand:'Al Haramain',    tag:'HOMBRE', usd:75.00 , desc:'Floral amaderado con jazmín, rosa y base de sándalo. Sofisticado y sensual.',           cat:'hombre', img:'AMBER_OUD_DUBAI_N.jpg' },
-  { id:12, name:'Armaf Club De Nuit Elixir',    brand:'Armaf',          tag:'HOMBRE', usd:56.50 , desc:'Frutal especiado con notas de piña, abedul y almizcle. Inspirado en los clásicos.',     cat:'hombre', img:'CLUB_DE_NUIT_ELIXIR.jpg' },
-  { id:13, name:'Fakhar Silver',                brand:'Lattafa',        tag:'HOMBRE', usd:38.00 , desc:'Fresco y limpio con bergamota, lavanda y cedro. Ideal para el día a día.',              cat:'hombre', img:'FAKHAR_SILVER.jpg' },
-  { id:14, name:'Qaed Al Fursan',               brand:'Lattafa',        tag:'UNISEX', usd:33.00 , desc:'Oriental especiado con notas de azafrán, rosa y oud. Misterioso y envolvente.',         cat:'unisex', img:'QAED.jpg' },
-  { id:15, name:'Maison Alhambra Salvo Elixir', brand:'Maison Alhambra',tag:'HOMBRE', usd:36.00 , desc:'Amaderado intenso con notas de vetiver, cedro y almizcle. Elegante y moderno.',        cat:'hombre', img:'SALVO_ELIXIR.jpg' },
-  { id:16,  name:'Hawas Ice', brand:'Rasasi', tag:'HOMBRE', usd:52.00 ,desc:'Versión helada del Hawas. Notas de menta ártica, almizcle marino y madera fría. Refrescante e impactante.',           cat:'hombre', img:'HAWAS_ICE.avif' },
-  { id:17,  name:'Odyssey Aqua',  brand:'Odyssey', tag:'UNISEX', usd:39.70 ,desc:'Acuático fresco con notas de bergamota, algas marinas y base amaderada. Ideal para el día a día.', cat:'unisex', img:'ODYSSEY_AQUA.avif' },
+  { id:10, name:'Al Haramain Dubai Night',      brand:'Al Haramain',    tag:'HOMBRE', usd:75.00 , desc:'Floral amaderado con jazmín, rosa y base de sándalo. Sofisticado y sensual.',           cat:'hombre', img:'AMBER_OUD_DUBAI_N.jpg' },
+  { id:11, name:'Armaf Club De Nuit Elixir',    brand:'Armaf',          tag:'HOMBRE', usd:56.50 , desc:'Frutal especiado con notas de piña, abedul y almizcle. Inspirado en los clásicos.',     cat:'hombre', img:'CLUB_DE_NUIT_ELIXIR.jpg' },
+  { id:12, name:'Fakhar Silver',                brand:'Lattafa',        tag:'HOMBRE', usd:38.00 , desc:'Fresco y limpio con bergamota, lavanda y cedro. Ideal para el día a día.',              cat:'hombre', img:'FAKHAR_SILVER.jpg' },
+  { id:13, name:'Qaed Al Fursan',               brand:'Lattafa',        tag:'UNISEX', usd:33.00 , desc:'Oriental especiado con notas de azafrán, rosa y oud. Misterioso y envolvente.',         cat:'unisex', img:'QAED.jpg' },
+  { id:14, name:'Maison Alhambra Salvo Elixir', brand:'Maison Alhambra',tag:'HOMBRE', usd:36.00 , desc:'Amaderado intenso con notas de vetiver, cedro y almizcle. Elegante y moderno.',        cat:'hombre', img:'SALVO_ELIXIR.jpg' },
+  { id:15,  name:'Hawas Ice', brand:'Rasasi', tag:'HOMBRE', usd:52.00 ,desc:'Versión helada del Hawas. Notas de menta ártica, almizcle marino y madera fría. Refrescante e impactante.',           cat:'hombre', img:'HAWAS_ICE.avif' },
+  { id:16,  name:'Odyssey Aqua',  brand:'Odyssey', tag:'UNISEX', usd:39.70 ,desc:'Acuático fresco con notas de bergamota, algas marinas y base amaderada. Ideal para el día a día.', cat:'unisex', img:'ODYSSEY_AQUA.avif' },
 ];
 
 // precio en ARS calculado dinámicamente
