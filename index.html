@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>V&M — Fragancias</title>
-<link rel="icon" type="image/png" href="logo.jpeg">
+<link rel="icon" type="image/jpeg" href="logo.jpeg">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
   .nav-logo-img {
-  height: 40px; /* Ajustá este valor según el alto de tu logo */
-  width: auto;
-  object-fit: contain;
-  display: block;
+    height: 40px; /* Ajustá este valor según el alto de tu logo */
+    width: auto;
+    object-fit: contain;
+    display: block;
   }
   
   :root {
@@ -38,143 +38,22 @@
     overflow-x: hidden;
   }
 
-  /* ── LOGIN OVERLAY ── */
-  .login-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--black);
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-  .login-overlay.hidden { display: none; }
-
-  .login-box {
-    width: 100%;
-    max-width: 380px;
-    padding: 0 24px;
-  }
-
-  .login-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 42px;
-    font-weight: 300;
-    letter-spacing: 10px;
-    color: var(--gold);
-    text-align: center;
-    margin-bottom: 8px;
-  }
-
-  .login-sub {
-    text-align: center;
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    margin-bottom: 48px;
-  }
-
-  .login-field {
-    margin-bottom: 16px;
-  }
-
-  .login-field label {
-    display: block;
+  /* ── ESTILOS DE STOCK ── */
+  .out-of-stock-badge {
     font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-  }
-
-  .login-field input {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--cream);
-    padding: 14px 16px;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .login-field input:focus { border-color: var(--gold); }
-  .login-field input::placeholder { color: var(--muted); font-size: 12px; }
-
-  .login-btn {
-    width: 100%;
-    background: var(--gold);
-    color: var(--black);
-    border: none;
-    padding: 16px;
-    font-size: 12px;
-    letter-spacing: 4px;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    margin-top: 8px;
-    transition: background 0.2s;
-  }
-  .login-btn:hover { background: var(--gold-light); }
-
-  .login-error {
+    letter-spacing: 2px;
     color: #e05555;
-    font-size: 11px;
-    text-align: center;
-    margin-top: 16px;
-    letter-spacing: 1px;
-    min-height: 16px;
+    border: 1px solid rgba(224, 85, 85, 0.4);
+    padding: 6px 12px;
+    text-transform: uppercase;
+    font-weight: 500;
   }
-
-  .login-sql {
-    margin-top: 32px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 2px solid var(--gold);
-    padding: 14px 16px;
-    font-family: monospace;
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.6;
+  
+  .product-card.out-of-stock {
+    opacity: 0.6;
   }
-  .login-sql .kw { color: #7ca8d4; }
-  .login-sql .str { color: #c5a84c; }
-  .login-sql .val { color: #88c988; }
-
-  .auth-tabs {
-    display: flex;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(201,168,76,0.18);
-  }
-  .auth-tab {
-    flex: 1;
-    background: none;
-    border-bottom: 2px solid transparent;
-    color: #888;
-    padding: 10px;
-    font-size: 11px;
-    letter-spacing: 3px;
-    font-family: 'Inter', sans-serif;
-    margin-bottom: -1px;
-    transition: color 0.2s, border-color 0.2s;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .auth-tab-active {
-    border-bottom-color: #c9a84c !important;
-    color: #c9a84c !important;
-  }
-
-  .login-success {
-    color: #5cb85c;
-    font-size: 11px;
-    text-align: center;
-    margin-top: 16px;
-    letter-spacing: 1px;
-    min-height: 16px;
+  .product-card.out-of-stock:hover {
+    background: var(--black);
   }
 
   /* ── PRODUCT IMAGE ── */
@@ -200,7 +79,7 @@
     width: auto;
     object-fit: contain;
     transition: transform 0.4s ease;
-    mix-blend-mode: screen; /* saca el fondo negro */
+    mix-blend-mode: screen;
   }
   .product-card:hover .product-img-wrap img { transform: scale(1.05); }
 
@@ -238,18 +117,6 @@
   .nav-links a:hover { opacity: 1; color: var(--gold); }
 
   .nav-right { display: flex; align-items: center; gap: 16px; }
-
-  .logout-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: color 0.2s;
-    font-family: 'Inter', sans-serif;
-  }
-  .logout-btn:hover { color: var(--cream); }
 
   .cart-btn {
     background: none;
@@ -622,22 +489,6 @@
   .cart-total-label { font-size: 12px; letter-spacing: 2px; color: var(--muted); }
   .cart-total-price { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold); }
 
-  .checkout-btn {
-    width: 100%;
-    background: var(--gold);
-    color: var(--black);
-    border: none;
-    padding: 16px;
-    font-size: 12px;
-    letter-spacing: 4px;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    transition: background 0.2s;
-    margin-bottom: 10px;
-  }
-  .checkout-btn:hover { background: var(--gold-light); }
-
   .whatsapp-checkout {
     width: 100%;
     background: none;
@@ -685,11 +536,11 @@
 </head>
 <body>
 
-
-
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">V&M Fragancias</a>
+  <a href="#">
+    <img src="logo.jpeg" alt="V&M Fragancias" class="nav-logo-img">
+  </a>
   <ul class="nav-links">
     <li><a href="#catalogo">Catálogo</a></li>
     <li><a href="#decants">Decants</a></li>
@@ -697,7 +548,6 @@
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <div class="nav-right">
-
     <button class="cart-btn" id="cartToggleBtn">
       Carrito
       <span class="cart-count" id="cartCount">0</span>
@@ -790,31 +640,30 @@
 <div class="toast" id="toast">Agregado: <span id="toastName"></span></div>
 
 <script>
-// ── TIPO DE CAMBIO — modificá este número cuando cambie el dólar ──
+// ── TIPO DE CAMBIO ──
 let USD = 1600;
 
-// ── DATA (precios en USD, se convierten a ARS automático) ─────────
+// ── DATA ──
 const products = [
-  { id:1,  name:'9PM',                          brand:'Afnan',          tag:'HOMBRE', usd:41.00 , desc:'Oriental amaderado con notas de bergamota, cardamomo y pachulí. Ideal para la noche.',  cat:'hombre', img:'9PM.jpeg', stock: true },
-  { id:2,  name:'9PM Elixir',                   brand:'Afnan',          tag:'HOMBRE', usd:56.50 ,desc:'Versión más intensa y oscura del 9PM clásico. Oud, almizcle y madera de cachemira.',    cat:'hombre', img:'9PM_Elixir.jpeg', stock: true},
-  { id:3,  name:'9PM Night Out',                brand:'Afnan',          tag:'HOMBRE', usd:72.50 , desc:'Versión fresca y vibrante del 9PM. Perfecto para salidas nocturnas.',                   cat:'hombre', img:'9PM_NIGHT_OUT.jpeg', stock: true },
-  { id:4,  name:'Odyssey Mandarin Sky Elixir',  brand:'Afnan',          tag:'UNISEX', usd:55.00 , desc:'Cítrico y especiado con notas de mandarina, pimienta rosa y sándalo cremoso.',          cat:'unisex', img:'MANDARIN_SKY_ELIXIR.jpeg', stock: true },
-  { id:5,  name:'Hawas For Him',                brand:'Rasasi',         tag:'HOMBRE', usd:36.00 , desc:'Acuático marino con cardamomo, menta y madera. Fresco, elegante y duradero.',           cat:'hombre', img:'HAWAS_FORHIM.jpeg', stock: false },
-  { id:6,  name:'Hawas Malibu',                 brand:'Rasasi',         tag:'HOMBRE', usd:45.50 , desc:'Versión tropical del Hawas. Notas de coco, brisa marina y frutas exóticas.',            cat:'hombre', img:'HAWAS_MALIBU.jpg' , stock: true },
-  { id:7,  name:'Lattafa The Kingdom',          brand:'Lattafa',        tag:'HOMBRE', usd:41.60 , desc:'Oud amaderado con especias orientales. Imponente, cálido y con gran proyección.',       cat:'hombre', img:'THE_KING.jpg', stock: true },
-  { id:8,  name:'Honor And Glory',              brand:'Afnan',          tag:'HOMBRE', usd:32.00 , desc:'Fresco y especiado con bergamota, lavanda y base amaderada. Versátil para el día.',     cat:'hombre', img:'HONOR_AND_GL.jpg', stock: false },
-  { id:9,  name:'Al Haramain Amber Oud Gold',   brand:'Al Haramain',    tag:'UNISEX', usd:75.50 , desc:'Ámbar y oud en su máxima expresión. Rico, cálido y con una estela interminable.',       cat:'unisex', img:'AMBER_OUD_GO.jpg', stock: false  },
-  { id:10, name:'Al Haramain Dubai Night',      brand:'Al Haramain',    tag:'HOMBRE', usd:75.00 , desc:'Floral amaderado con jazmín, rosa y base de sándalo. Sofisticado y sensual.',           cat:'hombre', img:'AMBER_OUD_DUBAI_N.jpg', stock: false },
-  { id:11, name:'Armaf Club De Nuit Elixir',    brand:'Armaf',          tag:'HOMBRE', usd:56.50 , desc:'Frutal especiado con notas de piña, abedul y almizcle. Inspirado en los clásicos.',     cat:'hombre', img:'CLUB_DE_NUIT_ELIXIR.jpg', stock: false },
-  { id:12, name:'Fakhar Silver',                brand:'Lattafa',        tag:'HOMBRE', usd:38.00 , desc:'Fresco y limpio con bergamota, lavanda y cedro. Ideal para el día a día.',              cat:'hombre', img:'FAKHAR_SILVER.jpg', stock: false },
+  { id:1,  name:'9PM',                        brand:'Afnan',          tag:'HOMBRE', usd:41.00 , desc:'Oriental amaderado con notas de bergamota, cardamomo y pachulí. Ideal para la noche.',   cat:'hombre', img:'9PM.jpeg', stock: true },
+  { id:2,  name:'9PM Elixir',               brand:'Afnan',          tag:'HOMBRE', usd:56.50 , desc:'Versión más intensa y oscura del 9PM clásico. Oud, almizcle y madera de cachemira.',    cat:'hombre', img:'9PM_Elixir.jpeg', stock: true},
+  { id:3,  name:'9PM Night Out',            brand:'Afnan',          tag:'HOMBRE', usd:72.50 , desc:'Versión fresca y vibrante del 9PM. Perfecto para salidas nocturnas.',                    cat:'hombre', img:'9PM_NIGHT_OUT.jpeg', stock: true },
+  { id:4,  name:'Odyssey Mandarin Sky Elixir', brand:'Afnan',          tag:'UNISEX', usd:55.00 , desc:'Cítrico y especiado con notas de mandarina, pimienta rosa y sándalo cremoso.',          cat:'unisex', img:'MANDARIN_SKY_ELIXIR.jpeg', stock: true },
+  { id:5,  name:'Hawas For Him',               brand:'Rasasi',         tag:'HOMBRE', usd:36.00 , desc:'Acuático marino con cardamomo, menta y madera. Fresco, elegante y duradero.',           cat:'hombre', img:'HAWAS_FORHIM.jpeg', stock: false },
+  { id:6,  name:'Hawas Malibu',                brand:'Rasasi',         tag:'HOMBRE', usd:45.50 , desc:'Versión tropical del Hawas. Notas de coco, brisa marina y frutas exóticas.',             cat:'hombre', img:'HAWAS_MALIBU.jpg' , stock: true },
+  { id:7,  name:'Lattafa The Kingdom',         brand:'Lattafa',        tag:'HOMBRE', usd:41.60 , desc:'Oud amaderado con especias orientales. Imponente, cálido y con gran proyección.',       cat:'hombre', img:'THE_KING.jpg', stock: true },
+  { id:8,  name:'Honor And Glory',             brand:'Afnan',          tag:'HOMBRE', usd:32.00 , desc:'Fresco y especiado con bergamota, lavanda y base amaderada. Versátil para el día.',     cat:'hombre', img:'HONOR_AND_GL.jpg', stock: false },
+  { id:9,  name:'Al Haramain Amber Oud Gold',  brand:'Al Haramain',    tag:'UNISEX', usd:75.50 , desc:'Ámbar y oud en su máxima expresión. Rico, cálido y con una estela interminable.',        cat:'unisex', img:'AMBER_OUD_GO.jpg', stock: false  },
+  { id:10, name:'Al Haramain Dubai Night',     brand:'Al Haramain',    tag:'HOMBRE', usd:75.00 , desc:'Floral amaderado con jazmín, rosa y base de sándalo. Sofisticado y sensual.',           cat:'hombre', img:'AMBER_OUD_DUBAI_N.jpg', stock: false },
+  { id:11, name:'Armaf Club De Nuit Elixir',   brand:'Armaf',          tag:'HOMBRE', usd:56.50 , desc:'Frutal especiado con notas de piña, abedul y almizcle. Inspirado en los clásicos.',     cat:'hombre', img:'CLUB_DE_NUIT_ELIXIR.jpg', stock: false },
+  { id:12, name:'Fakhar Silver',               brand:'Lattafa',        tag:'HOMBRE', usd:38.00 , desc:'Fresco y limpio con bergamota, lavanda y cedro. Ideal para el día a día.',              cat:'hombre', img:'FAKHAR_SILVER.jpg', stock: false },
   { id:13, name:'Qaed Al Fursan',               brand:'Lattafa',        tag:'UNISEX', usd:33.00 , desc:'Oriental especiado con notas de azafrán, rosa y oud. Misterioso y envolvente.',         cat:'unisex', img:'QAED.jpg', stock: false },
-  { id:14, name:'Maison Alhambra Salvo Elixir', brand:'Maison Alhambra',tag:'HOMBRE', usd:36.00 , desc:'Amaderado intenso con notas de vetiver, cedro y almizcle. Elegante y moderno.',        cat:'hombre', img:'SALVO_ELIXIR.jpg', stock: false },
-  { id:15,  name:'Hawas Ice', brand:'Rasasi', tag:'HOMBRE', usd:52.00 ,desc:'Versión helada del Hawas. Notas de menta ártica, almizcle marino y madera fría. Refrescante e impactante.',           cat:'hombre', img:'HAWAS_ICE.avif', stock: true},
-  { id:16,  name:'Odyssey Aqua',  brand:'Odyssey', tag:'UNISEX', usd:39.70 ,desc:'Acuático fresco con notas de bergamota, algas marinas y base amaderada. Ideal para el día a día.', cat:'unisex', img:'ODYSSEY_AQUA.avif', stock: true },
+  { id:14, name:'Maison Alhambra Salvo Elixir',brand:'Maison Alhambra',tag:'HOMBRE', usd:36.00 , desc:'Amaderado intenso con notas de vetiver, cedro y almizcle. Elegante y moderno.',        cat:'hombre', img:'SALVO_ELIXIR.jpg', stock: false },
+  { id:15, name:'Hawas Ice',                   brand:'Rasasi',         tag:'HOMBRE', usd:52.00 , desc:'Versión helada del Hawas. Notas de menta ártica, almizcle marino y madera fría.',       cat:'hombre', img:'HAWAS_ICE.avif', stock: true},
+  { id:16, name:'Odyssey Aqua',                brand:'Odyssey',        tag:'UNISEX', usd:39.70 , desc:'Acuático fresco con notas de bergamota, algas marinas y base amaderada.',               cat:'unisex', img:'ODYSSEY_AQUA.avif', stock: true },
 ];
 
-// precio en ARS calculado dinámicamente
-function arsPrice(usd) { return Math.round(usd * USD); } // x2 = margen de venta
+function arsPrice(usd) { return Math.round(usd * USD); }
 
 const decants = [
   { id:101, name:'9PM',                brand:'Afnan',   ars: 4499, stock: true },
@@ -823,19 +672,22 @@ const decants = [
   { id:104, name:'Lattafa The Kingdom', brand:'Lattafa', ars: 4699, stock: true },
 ];
 
-
-
-// ── CART STATE ────────────────────────────────────────────────────
 let cart = [];
 
-// ── RENDER PRODUCTS ───────────────────────────────────────────────
+// ── RENDER PRODUCTS ──
 function renderProducts(filter) {
   const grid = document.getElementById('productGrid');
   const list = filter === 'todos' ? products : products.filter(p => p.cat === filter);
   grid.innerHTML = list.map(p => {
     const ars = arsPrice(p.usd);
+    const hasStock = p.stock !== false;
+
+    const actionElement = hasStock 
+      ? `<button class="add-btn" data-id="${p.id}" data-name="${p.name}" data-brand="${p.brand}" data-price="${ars}" data-type="Sellado">+</button>`
+      : `<span class="out-of-stock-badge">Agotado</span>`;
+
     return `
-    <div class="product-card">
+    <div class="product-card ${hasStock ? '' : 'out-of-stock'}">
       <div class="product-img-wrap">
         <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
       </div>
@@ -848,15 +700,16 @@ function renderProducts(filter) {
           <div class="product-price">$${ars.toLocaleString('es-AR')}</div>
           <div style="font-size:10px; color:var(--muted); letter-spacing:1px">USD ${p.usd}</div>
         </div>
-        <button class="add-btn" data-id="${p.id}" data-name="${p.name}" data-brand="${p.brand}" data-price="${ars}" data-type="Sellado">+</button>
+        ${actionElement}
       </div>
     </div>`;
   }).join('');
 }
 
+// ── RENDER DECANTS ──
 function renderDecants() {
   document.getElementById('decantsGrid').innerHTML = decants.map(d => {
-    const ars = d.ars; // Usa directamente el precio en ARS que pusiste a mano
+    const ars = d.ars;
     const hasStock = d.stock !== false;
 
     const actionElement = hasStock
@@ -877,20 +730,19 @@ function renderDecants() {
   }).join('');
 }
 
-// ── EVENT DELEGATION para agregar al carrito ──────────────────────
+// ── EVENT DELEGATION ──
 document.getElementById('productGrid').addEventListener('click', e => {
-  const btn = e.target.closest('[data-id]');
+  const btn = e.target.closest('button[data-id]');
   if (!btn) return;
   addToCart(+btn.dataset.id, btn.dataset.name, btn.dataset.brand, +btn.dataset.price, btn.dataset.type);
 });
 
 document.getElementById('decantsGrid').addEventListener('click', e => {
-  const btn = e.target.closest('[data-id]');
+  const btn = e.target.closest('button[data-id]');
   if (!btn) return;
   addToCart(+btn.dataset.id, btn.dataset.name, btn.dataset.brand, +btn.dataset.price, btn.dataset.type);
 });
 
-// ── EVENT DELEGATION para carrito (qty + delete) ──────────────────
 document.getElementById('cartItems').addEventListener('click', e => {
   const btn = e.target.closest('button');
   if (!btn) return;
@@ -917,7 +769,7 @@ document.getElementById('cartItems').addEventListener('click', e => {
   }
 });
 
-// ── CART LOGIC ────────────────────────────────────────────────────
+// ── CART LOGIC ──
 function addToCart(id, name, brand, price, type) {
   const existing = cart.find(i => i.id === id);
   if (existing) {
@@ -933,7 +785,6 @@ function updateCartUI() {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const count = cart.reduce((s, i) => s + i.qty, 0);
 
-  // badge
   const badge = document.getElementById('cartCount');
   badge.textContent = count;
   badge.classList.toggle('visible', count > 0);
@@ -973,7 +824,6 @@ function updateCartUI() {
   `).join('');
 }
 
-// ── CART TOGGLE ───────────────────────────────────────────────────
 function toggleCart() {
   document.getElementById('cartPanel').classList.toggle('open');
   document.getElementById('cartOverlay').classList.toggle('open');
@@ -982,7 +832,6 @@ document.getElementById('cartToggleBtn').addEventListener('click', toggleCart);
 document.getElementById('cartCloseBtn').addEventListener('click', toggleCart);
 document.getElementById('cartOverlay').addEventListener('click', toggleCart);
 
-// ── WHATSAPP ──────────────────────────────────────────────────────
 document.getElementById('waBtn').addEventListener('click', () => {
   if (!cart.length) return;
   const lines = cart.map(i => `• ${i.name} (${i.type}) x${i.qty} — $${(i.price * i.qty).toLocaleString('es-AR')}`);
@@ -991,7 +840,6 @@ document.getElementById('waBtn').addEventListener('click', () => {
   window.open(`https://wa.me/5491139457935?text=${encodeURIComponent(msg)}`, '_blank');
 });
 
-// ── FILTER TABS ───────────────────────────────────────────────────
 let currentFilter = 'todos';
 document.getElementById('filterTabs').addEventListener('click', e => {
   const btn = e.target.closest('.filter-tab');
@@ -1002,7 +850,6 @@ document.getElementById('filterTabs').addEventListener('click', e => {
   renderProducts(currentFilter);
 });
 
-// ── TOAST ─────────────────────────────────────────────────────────
 let toastTimer;
 function showToast(name) {
   const t = document.getElementById('toast');
@@ -1012,11 +859,10 @@ function showToast(name) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// ── INIT ──────────────────────────────────────────────────────────
+// ── INIT ──
 renderProducts('todos');
 renderDecants();
 updateCartUI();
 </script>
 </body>
 </html>
-
