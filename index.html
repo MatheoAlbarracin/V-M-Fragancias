@@ -817,10 +817,10 @@ const products = [
 function arsPrice(usd) { return Math.round(usd * USD); } // x2 = margen de venta
 
 const decants = [
-  { id:101, name:'9PM',                        brand:'Afnan',       usd:2.86},
-  { id:102, name:'9PM Night Out',                 brand:'Afnan',        usd:4.77},
-  { id:103, name:'Hawas Ice',              brand:'Rasasi',       usd:3.72},
-  { id:104, name:'Lattafa The Kingdom',        brand:'Lattafa',       usd:2.86},
+  { id:101, name:'9PM',                brand:'Afnan',   ars: 4499, stock: true },
+  { id:102, name:'9PM Night Out',      brand:'Afnan',   ars: 7499, stock: false },
+  { id:103, name:'Hawas Ice',          brand:'Rasasi',  ars: 5599, stock: true },
+  { id:104, name:'Lattafa The Kingdom', brand:'Lattafa', ars: 4699, stock: true },
 ];
 
 
@@ -856,17 +856,22 @@ function renderProducts(filter) {
 
 function renderDecants() {
   document.getElementById('decantsGrid').innerHTML = decants.map(d => {
-    const ars = Math.round(d.usd * USD * 1.8);
+    const ars = d.ars; // Usa directamente el precio en ARS que pusiste a mano
+    const hasStock = d.stock !== false;
+
+    const actionElement = hasStock
+      ? `<button class="decant-add" data-id="${d.id}" data-name="${d.name}" data-brand="${d.brand}" data-price="${ars}" data-type="Decant 5ml">+</button>`
+      : `<span class="out-of-stock-badge" style="font-size:9px; padding:4px 8px;">Agotado</span>`;
+
     return `
-    <div class="decant-card">
+    <div class="decant-card" style="${hasStock ? '' : 'opacity:0.6;'}">
       <div>
         <div class="decant-name">${d.name}</div>
         <div class="decant-ml">${d.brand} · 5ml</div>
       </div>
       <div class="decant-right">
         <div class="decant-price">$${ars.toLocaleString('es-AR')}</div>
-        <div style="font-size:10px; color:var(--muted); text-align:right">USD ${d.usd}</div>
-        <button class="decant-add" data-id="${d.id}" data-name="${d.name}" data-brand="${d.brand}" data-price="${ars}" data-type="Decant 5ml">+</button>
+        ${actionElement}
       </div>
     </div>`;
   }).join('');
