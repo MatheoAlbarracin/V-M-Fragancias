@@ -784,7 +784,7 @@
 
 <script>
 // ── TIPO DE CAMBIO — modificá este número cuando cambie el dólar ──
-let USD = 1570;
+let USD = 1600;
 
 // ── DATA (precios en USD, se convierten a ARS automático) ─────────
 const products = [
@@ -808,7 +808,7 @@ const products = [
 ];
 
 // precio en ARS calculado dinámicamente
-function arsPrice(usd) { return Math.round(usd * USD * 2); } // x2 = margen de venta
+function arsPrice(usd) { return Math.round(usd * USD); } // x2 = margen de venta
 
 const decants = [
   { id:101, name:'9PM',                        brand:'Afnan',       usd:2.86},
