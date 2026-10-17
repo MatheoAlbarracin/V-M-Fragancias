@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>V&M — Fragancias</title>
-<link rel="icon" type="image/jpeg" href="logo.jpeg">
+<link rel="icon" type="image/jpeg" href="log.jpeg">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -549,7 +549,7 @@
 <!-- NAV -->
 <nav>
   <a href="#">
-    <img src="logoNav.png" alt="V&M Fragancias" class="nav-logo-img">
+    <img src="log.jpeg" alt="V&M Fragancias" class="nav-logo-img">
   </a>
   <ul class="nav-links">
     <li><a href="#catalogo">Catálogo</a></li>
@@ -649,7 +649,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast">Agregado: <span id="toastName"></span></div>
 
-<!-- ── CHAT WIDGET ── -->
+<!-- ── CHAT WIDGET CON OPCIONES MÚLTIPLES ── -->
 <div id="aiChatWidget" style="position: fixed; bottom: 24px; left: 24px; z-index: 300;">
   <!-- Botón flotante -->
   <button id="aiChatToggle" style="background: var(--gold); color: var(--black); border: none; padding: 12px 20px; border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px;">
@@ -657,18 +657,27 @@
   </button>
 
   <!-- Ventana del chat -->
-  <div id="aiChatBox" style="display: none; position: absolute; bottom: 50px; left: 0; width: 320px; height: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+  <div id="aiChatBox" style="display: none; position: absolute; bottom: 50px; left: 0; width: 340px; height: 460px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
     <div style="background: var(--surface2); padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
       <span style="font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--gold);">Sommelier V&M</span>
       <button id="aiChatClose" style="background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer;">×</button>
     </div>
+
+    <!-- Área de mensajes -->
     <div id="aiChatMessages" style="flex: 1; padding: 16px; overflow-y: auto; font-size: 12px; line-height: 1.6; display: flex; flex-direction: column; gap: 12px;">
       <div style="background: var(--surface2); color: var(--cream); padding: 10px 12px; border-radius: 6px; align-self: flex-start; max-width: 85%;">
-        ¡Hola! Soy tu asesor de V&M. ¿Buscás alguna nota en particular o una recomendación según la ocasión?
+        ¡Hola! Te ayudo a encontrar tu fragancia ideal. Elegí una opción o escribime directamente abajo:
       </div>
     </div>
+
+    <!-- Botones de Opción Múltiple -->
+    <div id="aiQuickOptions" style="padding: 10px 12px; background: var(--surface2); border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; max-height: 120px; overflow-y: auto;">
+      <!-- Se cargan dinámicamente -->
+    </div>
+
+    <!-- Input manual -->
     <div style="padding: 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: var(--black);">
-      <input type="text" id="aiChatInput" placeholder="Ej: ¿Qué perfume me recomendás?" style="flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--cream); padding: 8px 12px; font-size: 12px; outline: none; border-radius: 4px;">
+      <input type="text" id="aiChatInput" placeholder="O escribí tu consulta..." style="flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--cream); padding: 8px 12px; font-size: 12px; outline: none; border-radius: 4px;">
       <button id="aiChatSend" style="background: var(--gold); color: var(--black); border: none; padding: 8px 14px; font-weight: 500; cursor: pointer; border-radius: 4px; font-size: 12px;">></button>
     </div>
   </div>
@@ -905,34 +914,113 @@ renderProducts('todos');
 renderDecants();
 updateCartUI();
 
-// ── LOGIC DEL CHAT WIDGET ──
+// ── SCRIPT DEL ASESOR CON CUESTIONARIO MÚLTIPLE ──
 const chatToggle = document.getElementById('aiChatToggle');
 const chatBox = document.getElementById('aiChatBox');
 const chatClose = document.getElementById('aiChatClose');
 const chatInput = document.getElementById('aiChatInput');
 const chatSend = document.getElementById('aiChatSend');
 const chatMessages = document.getElementById('aiChatMessages');
+const quickOptions = document.getElementById('aiQuickOptions');
+
+let userPreferences = {
+  genero: '',
+  notas: '',
+  estacion: '',
+  tipo: ''
+};
+
+const quizSteps = {
+  genero: {
+    title: '1. Género o estilo:',
+    options: ['Hombre', 'Mujer', 'Unisex']
+  },
+  notas: {
+    title: '2. Familia olfativa / Notas:',
+    options: ['Cítrico / Fresco', 'Dulce / Frutal', 'Amaderado / Oud', 'Acuático / Marino', 'Especiado / Ámbar']
+  },
+  estacion: {
+    title: '3. Estación del año / Clima:',
+    options: ['Verano / Calor', 'Invierno / Frío', 'Todo el año']
+  },
+  tipo: {
+    title: '4. Tipo de producto:',
+    options: ['Perfume Sellado', 'Decant 5ml', 'Lo que mejor rinda']
+  }
+};
+
+let currentStep = 'genero';
 
 chatToggle.addEventListener('click', () => {
   chatBox.style.display = chatBox.style.display === 'none' ? 'flex' : 'none';
+  if (quickOptions.children.length === 0) renderStep('genero');
 });
 
 chatClose.addEventListener('click', () => {
   chatBox.style.display = 'none';
 });
 
-async function sendAiMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
+function renderStep(stepKey) {
+  currentStep = stepKey;
+  const step = quizSteps[stepKey];
+  if (!step) return;
 
-  // Mensaje usuario
-  chatMessages.innerHTML += `<div style="background: var(--gold); color: var(--black); padding: 10px 12px; border-radius: 6px; align-self: flex-end; max-width: 85%; font-weight: 500;">${text}</div>`;
-  chatInput.value = '';
+  quickOptions.innerHTML = `<span style="width: 100%; font-size: 10px; color: var(--gold); font-weight: 500; margin-bottom: 2px;">${step.title}</span>`;
+  
+  step.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.textContent = opt;
+    btn.style.cssText = 'background: var(--black); color: var(--cream); border: 1px solid var(--border); padding: 5px 10px; font-size: 11px; border-radius: 12px; cursor: pointer; transition: all 0.2s;';
+    btn.onmouseover = () => { btn.style.borderColor = 'var(--gold)'; btn.style.color = 'var(--gold)'; };
+    btn.onmouseout = () => { btn.style.borderColor = 'var(--border)'; btn.style.color = 'var(--cream)'; };
+    
+    btn.addEventListener('click', () => handleOptionSelect(stepKey, opt));
+    quickOptions.appendChild(btn);
+  });
+}
+
+function handleOptionSelect(stepKey, value) {
+  userPreferences[stepKey] = value;
+
+  chatMessages.innerHTML += `<div style="background: var(--gold); color: var(--black); padding: 8px 12px; border-radius: 6px; align-self: flex-end; max-width: 85%; font-weight: 500;">${value}</div>`;
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
-  // Indicador escribiendo...
+  if (stepKey === 'genero') renderStep('notas');
+  else if (stepKey === 'notas') renderStep('estacion');
+  else if (stepKey === 'estacion') renderStep('tipo');
+  else if (stepKey === 'tipo') {
+    quickOptions.innerHTML = `<button onclick="resetQuiz()" style="background: var(--surface); color: var(--muted); border: 1px solid var(--border); padding: 4px 8px; font-size: 10px; border-radius: 4px; cursor: pointer;">↺ Reiniciar test</button>`;
+    
+    const promptSummary = `Buscando recomendación con estas preferencias:
+- Género: ${userPreferences.genero}
+- Notas preferidas: ${userPreferences.notas}
+- Ocasión/Estación: ${userPreferences.estacion}
+- Formato: ${userPreferences.tipo}
+
+¿Qué perfumes o decants de su catálogo me sugieren exactamente?`;
+
+    sendAiMessage(promptSummary);
+  }
+}
+
+function resetQuiz() {
+  userPreferences = { genero: '', notas: '', estacion: '', tipo: '' };
+  renderStep('genero');
+}
+
+async function sendAiMessage(customText = null) {
+  const text = customText || chatInput.value.trim();
+  if (!text) return;
+
+  if (!customText) {
+    chatMessages.innerHTML += `<div style="background: var(--gold); color: var(--black); padding: 10px 12px; border-radius: 6px; align-self: flex-end; max-width: 85%; font-weight: 500;">${text}</div>`;
+    chatInput.value = '';
+  }
+  
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
   const loadingId = 'loading-' + Date.now();
-  chatMessages.innerHTML += `<div id="${loadingId}" style="background: var(--surface2); color: var(--muted); padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Escribiendo...</div>`;
+  chatMessages.innerHTML += `<div id="${loadingId}" style="background: var(--surface2); color: var(--muted); padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Buscando la fragancia ideal...</div>`;
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
   try {
@@ -941,14 +1029,14 @@ async function sendAiMessage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: text })
     });
-    const data = await res.jsos();
+    const data = await res.json();
     
     document.getElementById(loadingId).remove();
 
     if (data.reply) {
       chatMessages.innerHTML += `<div style="background: var(--surface2); color: var(--cream); padding: 10px 12px; border-radius: 6px; align-self: flex-start; max-width: 85%;">${data.reply}</div>`;
     } else {
-      chatMessages.innerHTML += `<div style="background: var(--surface2); color: #e05555; padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Ocurrió un error. Intentá de nuevo.</div>`;
+      chatMessages.innerHTML += `<div style="background: var(--surface2); color: #e05555; padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Ocurrió un error al consultar. Intentá nuevamente.</div>`;
     }
   } catch (err) {
     document.getElementById(loadingId).remove();
@@ -957,7 +1045,7 @@ async function sendAiMessage() {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-chatSend.addEventListener('click', sendAiMessage);
+chatSend.addEventListener('click', () => sendAiMessage());
 chatInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') sendAiMessage();
 });
