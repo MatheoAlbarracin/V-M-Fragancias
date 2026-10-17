@@ -881,6 +881,90 @@ function showToast(name) {
 renderProducts('todos');
 renderDecants();
 updateCartUI();
+
+<!-- ── CHAT WIDGET ── -->
+<div id="aiChatWidget" style="position: fixed; bottom: 24px; left: 24px; z-index: 300;">
+  <!-- Botón flotante -->
+  <button id="aiChatToggle" style="background: var(--gold); color: var(--black); border: none; padding: 12px 20px; border-radius: 30px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px;">
+    <span>✨ Asesor Virtual</span>
+  </button>
+
+  <!-- Ventana del chat -->
+  <div id="aiChatBox" style="display: none; position: absolute; bottom: 50px; left: 0; width: 320px; height: 400px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+    <div style="background: var(--surface2); padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+      <span style="font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--gold);">Sommelier V&M</span>
+      <button id="aiChatClose" style="background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer;">×</button>
+    </div>
+    <div id="aiChatMessages" style="flex: 1; padding: 16px; overflow-y: auto; font-size: 12px; line-height: 1.6; display: flex; flex-direction: column; gap: 12px;">
+      <div style="background: var(--surface2); color: var(--cream); padding: 10px 12px; border-radius: 6px; align-self: flex-start; max-width: 85%;">
+        ¡Hola! Soy tu asesor de V&M. ¿Buscás alguna nota en particular o una recomendación según la ocasión?
+      </div>
+    </div>
+    <div style="padding: 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: var(--black);">
+      <input type="text" id="aiChatInput" placeholder="Ej: ¿Qué perfume me recomendás?" style="flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--cream); padding: 8px 12px; font-size: 12px; outline: none; border-radius: 4px;">
+      <button id="aiChatSend" style="background: var(--gold); color: var(--black); border: none; padding: 8px 14px; font-weight: 500; cursor: pointer; border-radius: 4px; font-size: 12px;">></button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Logic del Chat Widget
+const chatToggle = document.getElementById('aiChatToggle');
+const chatBox = document.getElementById('aiChatBox');
+const chatClose = document.getElementById('aiChatClose');
+const chatInput = document.getElementById('aiChatInput');
+const chatSend = document.getElementById('aiChatSend');
+const chatMessages = document.getElementById('aiChatMessages');
+
+chatToggle.addEventListener('click', () => {
+  chatBox.style.display = chatBox.style.display === 'none' ? 'flex' : 'none';
+});
+
+chatClose.addEventListener('click', () => {
+  chatBox.style.display = 'none';
+});
+
+async function sendAiMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  // Mensaje usuario
+  chatMessages.innerHTML += `<div style="background: var(--gold); color: var(--black); padding: 10px 12px; border-radius: 6px; align-self: flex-end; max-width: 85%; font-weight: 500;">${text}</div>`;
+  chatInput.value = '';
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  // Indicador escribiendo...
+  const loadingId = 'loading-' + Date.now();
+  chatMessages.innerHTML += `<div id="${loadingId}" style="background: var(--surface2); color: var(--muted); padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Escribiendo...</div>`;
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text })
+    });
+    const data = await res.json();
+    
+    document.getElementById(loadingId).remove();
+
+    if (data.reply) {
+      chatMessages.innerHTML += `<div style="background: var(--surface2); color: var(--cream); padding: 10px 12px; border-radius: 6px; align-self: flex-start; max-width: 85%;">${data.reply}</div>`;
+    } else {
+      chatMessages.innerHTML += `<div style="background: var(--surface2); color: #e05555; padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Ocurrió un error. Intentá de nuevo.</div>`;
+    }
+  } catch (err) {
+    document.getElementById(loadingId).remove();
+    chatMessages.innerHTML += `<div style="background: var(--surface2); color: #e05555; padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Error de conexión.</div>`;
+  }
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+chatSend.addEventListener('click', sendAiMessage);
+chatInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendAiMessage();
+});
+</script>
 </script>
 </body>
 </html>
