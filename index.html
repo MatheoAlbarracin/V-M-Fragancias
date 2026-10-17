@@ -941,7 +941,7 @@ async function sendAiMessage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: text })
     });
-    const data = await res.json();
+    const data = await res.jsos();
     
     document.getElementById(loadingId).remove();
 
