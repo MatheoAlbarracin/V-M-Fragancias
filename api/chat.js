@@ -1,16 +1,14 @@
 export default async function handler(req, res) {
-  // Solo permitimos peticiones POST
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método no permitido' });
+    return res.status(405).json({ error: 'Méthode non autorisée' });
   }
 
   const { message } = req.body;
 
   if (!message) {
-    return res.status(400).json({ error: 'El mensaje no puede estar vacío' });
+    return res.status(400).json({ error: 'Le message ne peut pas être vide' });
   }
 
-  // System Prompt: Le enseñamos a la IA sobre V&M Fragancias
   const systemPrompt = `
 Sos el Sommelier y Asesor Virtual de "V&M Fragancias", un emprendimiento de perfumería exclusiva en Buenos Aires, Argentina.
 Tu objetivo es asesorar a los clientes de forma elegante, atenta, breve y profesional.
@@ -38,7 +36,7 @@ CATÁLOGO PRINCIPAL (Sellados y Decants 5ml):
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile', // Modelo ultra rápido y muy inteligente
+        model: 'llama-3.1-8b-instant',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
@@ -51,14 +49,15 @@ CATÁLOGO PRINCIPAL (Sellados y Decants 5ml):
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error?.message || 'Error al conectar con la IA');
+      console.error('Groq Error response:', data);
+      return res.status(500).json({ error: data.error?.message || 'Erreur API Groq' });
     }
 
-    const reply = data.choices[0].message.content;
+    const reply = data.choices[0]?.message?.content || 'Aucune réponse générée.';
     return res.status(200).json({ reply });
 
   } catch (error) {
     console.error('Error en API Chat:', error);
-    return res.status(500).json({ error: 'Ocurrió un problema al procesar tu consulta.' });
+    return res.status(500).json({ error: 'Un problème est survenu lors du traitement de votre demande.' });
   }
 }
