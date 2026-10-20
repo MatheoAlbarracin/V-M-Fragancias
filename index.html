@@ -907,12 +907,23 @@ async function sendAiMessage(customText = null) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: text,
-        catalog: {
-          products: products.map(p => ({ name: p.name, brand: p.brand, desc: p.desc, cat: p.cat, stock: p.stock !== false, priceARS: arsPrice(p.usd) })),
-          decants: decants.map(d => ({ name: d.name, brand: d.brand, stock: d.stock !== false, priceARS: d.ars }))
-        }
-      })
+      message: text,
+      products: products.map(p => ({
+        name: p.name,
+        brand: p.brand,
+        description: p.desc,
+        category: p.cat,
+        stock: p.stock !== false,
+        price: arsPrice(p.usd)
+  })),
+      decants: decants.map(d => ({
+        name: d.name,
+        brand: d.brand,
+        stock: d.stock !== false,
+        price: d.ars
+  }))
+})
+
     });
     
     const data = await res.json();
