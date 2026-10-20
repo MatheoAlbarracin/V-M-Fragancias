@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // Permitir solicitudes POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
@@ -14,7 +13,7 @@ export default async function handler(req, res) {
     const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
-      return res.status(500).json({ error: 'Error: La variable GROQ_API_KEY no está configurada en Vercel.' });
+      return res.status(500).json({ error: 'Error: La variable GROQ_API_KEY no está configurada.' });
     }
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
