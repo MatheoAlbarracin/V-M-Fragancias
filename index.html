@@ -223,6 +223,9 @@
     transition: background 0.3s;
   }
   .product-card:hover { background: var(--surface2); }
+  .product-card { cursor:pointer; }
+  .product-card { cursor:pointer; }
+  .product-card { cursor:pointer; }
 
   .product-tag { font-size: 9px; letter-spacing: 3px; color: var(--gold); margin-bottom: 24px; opacity: 0.7; }
   .product-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; line-height: 1.2; margin-bottom: 8px; color: var(--cream); }
@@ -623,7 +626,7 @@ function renderProducts(filter) {
       : `<span class="out-of-stock-badge">Agotado</span>`;
 
     return `
-    <div class="product-card ${hasStock ? '' : 'out-of-stock'}">
+    <div class="product-card ${hasStock ? '' : 'out-of-stock'}" data-perfume-id="${p.id}" role="link" tabindex="0" aria-label="Ver detalles de ${p.name}">
       <div class="product-img-wrap">
         <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
       </div>
@@ -664,6 +667,90 @@ function renderDecants() {
   }).join('');
 }
 
+// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
+// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
+// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
+document.getElementById('productGrid').addEventListener('click', e => {
+  if (e.target.closest('button')) return;
+  const card = e.target.closest('[data-perfume-id]');
+  if (card) location.href = 'perfume.html?id=' + encodeURIComponent(card.dataset.perfumeId);
+});
+document.getElementById('productGrid').addEventListener('keydown', e => {
+  if (e.target.matches('[data-perfume-id]') && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    location.href = 'perfume.html?id=' + encodeURIComponent(e.target.dataset.perfumeId);
+  }
+});
+document.getElementById('productGrid').addEventListener('click', e => {
+  if (e.target.closest('button')) return;
+  const card = e.target.closest('[data-perfume-id]');
+  if (card) location.href = 'perfume.html?id=' + encodeURIComponent(card.dataset.perfumeId);
+});
+document.getElementById('productGrid').addEventListener('keydown', e => {
+  if (e.target.matches('[data-perfume-id]') && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    location.href = 'perfume.html?id=' + encodeURIComponent(e.target.dataset.perfumeId);
+  }
+});
+// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
+document.getElementById('productGrid').addEventListener('click', e => {
+  if (e.target.closest('button')) return;
+  const card = e.target.closest('[data-perfume-id]');
+  if (card) location.href = 'perfume.html?id=' + encodeURIComponent(card.dataset.perfumeId);
+});
+document.getElementById('productGrid').addEventListener('keydown', e => {
+  if (e.target.matches('[data-perfume-id]') && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    location.href = 'perfume.html?id=' + encodeURIComponent(e.target.dataset.perfumeId);
+  }
+});
+document.getElementById('productGrid').addEventListener('click', e => {
+  if (e.target.closest('button')) return;
+  const card = e.target.closest('[data-perfume-id]');
+  if (card) location.href = 'perfume.html?id=' + encodeURIComponent(card.dataset.perfumeId);
+});
+document.getElementById('productGrid').addEventListener('keydown', e => {
+  if (e.target.matches('[data-perfume-id]') && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    location.href = 'perfume.html?id=' + encodeURIComponent(e.target.dataset.perfumeId);
+  }
+});
+// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
+// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
+document.getElementById('productGrid').addEventListener('click', e => {
+  if (e.target.closest('button')) return;
+  const card = e.target.closest('[data-perfume-id]');
+  if (card) location.href = 'perfume.html?id=' + encodeURIComponent(card.dataset.perfumeId);
+});
+document.getElementById('productGrid').addEventListener('keydown', e => {
+  if (e.target.matches('[data-perfume-id]') && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    location.href = 'perfume.html?id=' + encodeURIComponent(e.target.dataset.perfumeId);
+  }
+});
+document.getElementById('productGrid').addEventListener('click', e => {
+  if (e.target.closest('button')) return;
+  const card = e.target.closest('[data-perfume-id]');
+  if (card) location.href = 'perfume.html?id=' + encodeURIComponent(card.dataset.perfumeId);
+});
+document.getElementById('productGrid').addEventListener('keydown', e => {
+  if (e.target.matches('[data-perfume-id]') && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    location.href = 'perfume.html?id=' + encodeURIComponent(e.target.dataset.perfumeId);
+  }
+});
+// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
+document.getElementById('productGrid').addEventListener('click', e => {
+  if (e.target.closest('button')) return;
+  const card = e.target.closest('[data-perfume-id]');
+  if (card) location.href = 'perfume.html?id=' + encodeURIComponent(card.dataset.perfumeId);
+});
+document.getElementById('productGrid').addEventListener('keydown', e => {
+  if (e.target.matches('[data-perfume-id]') && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    location.href = 'perfume.html?id=' + encodeURIComponent(e.target.dataset.perfumeId);
+  }
+});
 document.getElementById('productGrid').addEventListener('click', e => {
   const btn = e.target.closest('button[data-id]');
   if (!btn) return;
@@ -907,23 +994,12 @@ async function sendAiMessage(customText = null) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-      message: text,
-      products: products.map(p => ({
-        name: p.name,
-        brand: p.brand,
-        description: p.desc,
-        category: p.cat,
-        stock: p.stock !== false,
-        price: arsPrice(p.usd)
-  })),
-      decants: decants.map(d => ({
-        name: d.name,
-        brand: d.brand,
-        stock: d.stock !== false,
-        price: d.ars
-  }))
-})
-
+        message: text,
+        catalog: {
+          products: products.map(p => ({ name: p.name, brand: p.brand, desc: p.desc, cat: p.cat, stock: p.stock !== false, priceARS: arsPrice(p.usd) })),
+          decants: decants.map(d => ({ name: d.name, brand: d.brand, stock: d.stock !== false, priceARS: d.ars }))
+        }
+      })
     });
     
     const data = await res.json();
