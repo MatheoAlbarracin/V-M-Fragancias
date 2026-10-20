@@ -1,20 +1,22 @@
 export default async function handler(req, res) {
+  // Permitir solicitudes POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
 
-  const { message } = req.body;
-  if (!message) {
-    return res.status(400).json({ error: 'El mensaje está vacío' });
-  }
-
-  const apiKey = process.env.GROQ_API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Falta configurar GROQ_API_KEY en Vercel' });
-  }
-
   try {
+    const { message } = req.body || {};
+
+    if (!message) {
+      return res.status(400).json({ error: 'El mensaje está vacío' });
+    }
+
+    const apiKey = process.env.GROQ_API_KEY;
+
+    if (!apiKey) {
+      return res.status(500).json({ error: 'Error: La variable GROQ_API_KEY no está configurada en Vercel.' });
+    }
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -38,13 +40,13 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('Error desde Groq:', data);
       return res.status(500).json({ error: data.error?.message || 'Error de autenticación con Groq' });
     }
 
-    return res.status(200).json({ reply: data.choices[0]?.message?.content || 'Sin respuesta' });
+    const reply = data.choices?.[0]?.message?.content || 'Sin respuesta';
+    return res.status(200).json({ reply });
+
   } catch (err) {
-    console.error('Error interno:', err);
-    return res.status(500).json({ error: 'Error interno del servidor' });
+    return res.status(500).json({ error: `Exception: ${err.message}` });
   }
 }
