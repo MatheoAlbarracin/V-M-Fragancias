@@ -1,7 +1,15 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Detalle | V&M Fragancias</title><link rel="icon" href="logo.jpeg"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"><style>
 :root{--gold:#c9a84c;--cream:#f0ead6;--muted:#999;--bg:#0a0a0a;--panel:#171717;--border:#403722}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--cream);font-family:Inter,sans-serif;font-weight:300}a{color:inherit;text-decoration:none}.top{display:flex;align-items:center;justify-content:space-between;padding:22px max(5%,calc((100vw - 1120px)/2));border-bottom:1px solid var(--border)}.brand{color:var(--gold);letter-spacing:4px;font-size:17px}.back{font-size:12px;color:var(--muted)}main{max-width:1120px;margin:auto;padding:46px 22px 90px}.hero{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center}.photo{min-height:450px;background:#111;display:grid;place-items:center;border:1px solid var(--border);padding:35px}.photo img{max-width:100%;max-height:390px;object-fit:contain}.eyebrow{color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase}h1{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(42px,6vw,76px);margin:16px 0}.desc{color:#c4bfb2;line-height:1.9}.price{font-size:25px;color:var(--gold);margin-top:25px}.stock{font-size:12px;color:var(--muted);margin-top:10px}.button{display:inline-block;margin-top:30px;padding:14px 25px;background:var(--gold);color:#111;font-weight:600;font-size:12px;letter-spacing:1px}.section{margin-top:65px}h2{font-family:'Cormorant Garamond',serif;font-size:39px;font-weight:400;margin-bottom:8px}.hint{color:var(--muted);font-size:13px;line-height:1.8}.scroller{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:22px 0;scrollbar-color:var(--gold) #222}.note{flex:0 0 min(260px,75vw);min-height:190px;border:1px solid var(--border);background:var(--panel);scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}.note .icon{font-size:35px;margin-bottom:22px}.note strong{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400}.controls{display:flex;gap:12px}.controls button{background:transparent;color:var(--gold);border:1px solid var(--border);padding:10px 18px;cursor:pointer}.foot{border-top:1px solid var(--border);padding:28px;text-align:center;color:var(--muted);font-size:12px}@media(max-width:700px){.hero{grid-template-columns:1fr;gap:22px}.photo{min-height:310px}.photo img{max-height:280px}main{padding-top:22px}.section{margin-top:45px}}
+
+/* Escalas de acordes principales recreadas en HTML y CSS */
+.accords-wrap{max-width:580px;margin:24px auto 0;background:#161619;border:1px solid var(--border);border-radius:12px;padding:25px 20px}
+.accords-title{text-align:center;color:var(--gold);letter-spacing:2px;font-size:13px;margin:0 0 18px;text-transform:uppercase}
+.accords-bars{width:100%}.accord-bar{height:30px;display:flex;align-items:center;justify-content:center;border-radius:0 8px 8px 0;margin:0;min-width:0;white-space:nowrap;font-size:12px;font-weight:600;color:#101010;transition:filter .2s}
+.accord-bar:hover{filter:brightness(1.12)}.accord-caption{font-size:12px;line-height:1.7;color:var(--muted);margin:16px 0 0;text-align:center}
+@media(max-width:480px){.accords-wrap{padding:18px 12px}.accord-bar{height:29px;font-size:11px}}
 </style></head><body><header class="top"><a href="index.html" class="brand">V&M</a><a href="index.html#catalogo" class="back">← Volver al catálogo</a></header><main id="app"></main><footer class="foot">V&M FRAGANCIAS · Descubrí tu próxima fragancia</footer><script>
 const catalog = [{"id": 1, "name": "9PM", "brand": "Afnan", "tag": "HOMBRE", "usd": 41.0, "desc": "Oriental amaderado con notas de bergamota, cardamomo y pachulí. Ideal para la noche.", "cat": "hombre", "img": "9PM.jpeg", "stock": false, "notes": ["Bergamota", "Cardamomo", "Pachulí"], "price": 65600}, {"id": 2, "name": "9PM Elixir", "brand": "Afnan", "tag": "HOMBRE", "usd": 56.5, "desc": "Versión más intensa y oscura del 9PM clásico. Oud, almizcle y madera de cachemira.", "cat": "hombre", "img": "9PM_Elixir.jpeg", "stock": true, "notes": ["Oud", "Almizcle", "Madera de cachemira"], "price": 90400}, {"id": 3, "name": "9PM Night Out", "brand": "Afnan", "tag": "HOMBRE", "usd": 72.5, "desc": "Versión fresca y vibrante del 9PM. Perfecto para salidas nocturnas.", "cat": "hombre", "img": "9PM_NIGHT_OUT.jpeg", "stock": true, "notes": [], "price": 116000}, {"id": 4, "name": "Odyssey Mandarin Sky Elixir", "brand": "Odyssey", "tag": "UNISEX", "usd": 55.0, "desc": "Cítrico y especiado con notas de mandarina, pimienta rosa y sándalo cremoso.", "cat": "unisex", "img": "MANDARIN_SKY_ELIXIR.jpeg", "stock": true, "notes": ["Mandarina", "Pimienta rosa", "Sándalo"], "price": 88000}, {"id": 5, "name": "Hawas For Him", "brand": "Rasasi", "tag": "HOMBRE", "usd": 36.0, "desc": "Acuático marino con cardamomo, menta y madera. Fresco, elegante y duradero.", "cat": "hombre", "img": "HAWAS_FORHIM.jpeg", "stock": false, "notes": ["Cardamomo", "Menta", "Madera"], "price": 57600}, {"id": 6, "name": "Hawas Malibu", "brand": "Rasasi", "tag": "HOMBRE", "usd": 45.5, "desc": "Versión tropical del Hawas. Notas de coco, brisa marina y frutas exóticas.", "cat": "hombre", "img": "HAWAS_MALIBU.jpg", "stock": true, "notes": ["Coco", "Brisa marina", "Frutas exóticas"], "price": 72800}, {"id": 7, "name": "Lattafa The Kingdom", "brand": "Lattafa", "tag": "HOMBRE", "usd": 41.6, "desc": "Oud amaderado con especias orientales. Imponente, cálido y con gran proyección.", "cat": "hombre", "img": "THE_KING.jpg", "stock": true, "notes": ["Oud", "Especias orientales"], "price": 66560}, {"id": 8, "name": "Honor And Glory", "brand": "Lattafa", "tag": "HOMBRE", "usd": 32.0, "desc": "Fresco y especiado con bergamota, lavanda y base amaderada. Versátil para el día.", "cat": "hombre", "img": "HONOR_AND_GL.jpg", "stock": false, "notes": ["Bergamota", "Lavanda", "Maderas"], "price": 51200}, {"id": 9, "name": "Al Haramain Amber Oud Gold", "brand": "Al Haramain", "tag": "UNISEX", "usd": 75.5, "desc": "Ámbar y oud en su máxima expresión. Rico, cálido y con una estela interminable.", "cat": "unisex", "img": "AMBER_OUD_GO.jpg", "stock": false, "notes": ["Ámbar", "Oud"], "price": 120800}, {"id": 10, "name": "Al Haramain Dubai Night", "brand": "Al Haramain", "tag": "HOMBRE", "usd": 75.0, "desc": "Floral amaderado con jazmín, rosa y base de sándalo. Sofisticado y sensual.", "cat": "hombre", "img": "AMBER_OUD_DUBAI_N.jpg", "stock": false, "notes": ["Jazmín", "Rosa", "Sándalo"], "price": 120000}, {"id": 11, "name": "Armaf Club De Nuit Elixir", "brand": "Armaf", "tag": "HOMBRE", "usd": 56.5, "desc": "Frutal especiado con notas de piña, abedul y almizcle. Inspirado en los clásicos.", "cat": "hombre", "img": "CLUB_DE_NUIT_ELIXIR.jpg", "stock": false, "notes": ["Piña", "Abedul", "Almizcle"], "price": 90400}, {"id": 12, "name": "Fakhar Silver", "brand": "Lattafa", "tag": "HOMBRE", "usd": 38.0, "desc": "Fresco y limpio con bergamota, lavanda y cedro. Ideal para el día a día.", "cat": "hombre", "img": "FAKHAR_SILVER.jpg", "stock": false, "notes": ["Bergamota", "Lavanda", "Cedro"], "price": 60800}, {"id": 13, "name": "Qaed Al Fursan", "brand": "Lattafa", "tag": "UNISEX", "usd": 33.0, "desc": "Oriental especiado con notas de azafrán, rosa y oud. Misterioso y envolvente.", "cat": "unisex", "img": "QAED.jpg", "stock": false, "notes": ["Azafrán", "Rosa", "Oud"], "price": 52800}, {"id": 14, "name": "Maison Alhambra Salvo Elixir", "brand": "Maison Alhambra", "tag": "HOMBRE", "usd": 36.0, "desc": "Amaderado intenso con notas de vetiver, cedro y almizcle. Elegante y moderno.", "cat": "hombre", "img": "SALVO_ELIXIR.jpg", "stock": false, "notes": ["Vetiver", "Cedro", "Almizcle"], "price": 57600}, {"id": 15, "name": "Hawas Ice", "brand": "Rasasi", "tag": "HOMBRE", "usd": 52.0, "desc": "Versión helada del Hawas. Notas de menta ártica, almizcle marino y madera fría.", "cat": "hombre", "img": "HAWAS_ICE.avif", "stock": true, "notes": ["Menta", "Almizcle marino", "Maderas"], "price": 83200}, {"id": 16, "name": "Odyssey Aqua", "brand": "Odyssey", "tag": "UNISEX", "usd": 39.7, "desc": "Acuático fresco con notas de bergamota, algas marinas y base amaderada.", "cat": "unisex", "img": "ODYSSEY_AQUA.avif", "stock": true, "notes": ["Bergamota", "Algas marinas", "Maderas"], "price": 63520}];
+const accordsById = {"1":[{"name":"avainillado","width":100,"color":"#f6f4b3"},{"name":"ámbar","width":63,"color":"#a8430b"},{"name":"cálido especiado","width":60,"color":"#bf3609"},{"name":"afrutados","width":57,"color":"#ff482a"},{"name":"canela","width":55,"color":"#934b20"},{"name":"dulce","width":55,"color":"#ec303d"},{"name":"lavanda","width":54,"color":"#796589"},{"name":"fresco","width":52,"color":"#77b9c2"},{"name":"aromático","width":51,"color":"#2c8a78"},{"name":"atalcado","width":50,"color":"#a69b94"}],"2":[{"name":"cálido especiado","width":100,"color":"#bf3609"},{"name":"avainillado","width":73,"color":"#f6f4b3"},{"name":"aromático","width":67,"color":"#2c8a78"},{"name":"fresco especiado","width":65,"color":"#78b62c"},{"name":"cuero","width":56,"color":"#533832"},{"name":"lavanda","width":53,"color":"#796589"},{"name":"balsámico","width":51,"color":"#514f2b"},{"name":"pachulí","width":49,"color":"#4a5128"},{"name":"atalcado","width":45,"color":"#a69b94"},{"name":"amaderado","width":44,"color":"#734015"}],"3":[{"name":"amaderado","width":100,"color":"#734015"},{"name":"afrutados","width":93,"color":"#ff482a"},{"name":"cálido especiado","width":90,"color":"#bf3609"},{"name":"dulce","width":88,"color":"#ec303d"},{"name":"tropical","width":78,"color":"#bc8b0b"},{"name":"aromático","width":73,"color":"#2c8a78"},{"name":"lavanda","width":63,"color":"#796589"},{"name":"florales","width":60,"color":"#ae4774"},{"name":"avainillado","width":55,"color":"#f6f4b3"},{"name":"fresco especiado","width":52,"color":"#78b62c"}],"4":[{"name":"cítrico","width":100,"color":"#eaf04a"},{"name":"avainillado","width":87,"color":"#f6f4b3"},{"name":"dulce","width":77,"color":"#ec303d"},{"name":"caramelo","width":67,"color":"#a67c44"},{"name":"aromático","width":60,"color":"#2c8a78"},{"name":"cálido especiado","width":59,"color":"#bf3609"},{"name":"ámbar","width":52,"color":"#a8430b"},{"name":"balsámico","width":50,"color":"#514f2b"},{"name":"fresco especiado","width":50,"color":"#78b62c"},{"name":"lavanda","width":49,"color":"#796589"}],"5":[{"name":"afrutados","width":100,"color":"#ff482a"},{"name":"cítrico","width":97,"color":"#eaf04a"},{"name":"acuático","width":86,"color":"#4fa5ba"},{"name":"fresco","width":80,"color":"#77b9c2"},{"name":"cálido especiado","width":64,"color":"#bf3609"},{"name":"dulce","width":58,"color":"#ec303d"},{"name":"ámbar","width":57,"color":"#a8430b"},{"name":"almizclado","width":55,"color":"#a79daa"},{"name":"aromático","width":55,"color":"#2c8a78"},{"name":"animálico","width":53,"color":"#663b1e"}],"6":[{"name":"dulce","width":100,"color":"#ec303d"},{"name":"ámbar","width":86,"color":"#a8430b"},{"name":"cítrico","width":80,"color":"#eaf04a"},{"name":"afrutados","width":77,"color":"#ff482a"},{"name":"atalcado","width":69,"color":"#a69b94"},{"name":"avainillado","width":61,"color":"#f6f4b3"},{"name":"almizclado","width":60,"color":"#a79daa"},{"name":"amaderado","width":58,"color":"#734015"},{"name":"aromático","width":58,"color":"#2c8a78"},{"name":"iris","width":57,"color":"#857794"}],"7":[{"name":"avainillado","width":100,"color":"#f6f4b3"},{"name":"aromático","width":80,"color":"#2c8a78"},{"name":"dulce","width":67,"color":"#ec303d"},{"name":"ámbar","width":66,"color":"#a8430b"},{"name":"lavanda","width":61,"color":"#796589"},{"name":"verde","width":61,"color":"#116b26"},{"name":"fresco especiado","width":55,"color":"#78b62c"},{"name":"tabaco","width":54,"color":"#745522"},{"name":"herbal","width":44,"color":"#446b57"},{"name":"balsámico","width":44,"color":"#514f2b"}],"8":[{"name":"dulce","width":100,"color":"#ec303d"},{"name":"cálido especiado","width":76,"color":"#bf3609"},{"name":"afrutados","width":66,"color":"#ff482a"},{"name":"avainillado","width":62,"color":"#f6f4b3"},{"name":"amaderado","width":54,"color":"#734015"},{"name":"atalcado","width":52,"color":"#a69b94"},{"name":"canela","width":51,"color":"#934b20"},{"name":"tropical","width":50,"color":"#bc8b0b"}],"9":[{"name":"dulce","width":100,"color":"#ec303d"},{"name":"afrutados","width":92,"color":"#ff482a"},{"name":"ozónico","width":74,"color":"#9cc9c9"},{"name":"avainillado","width":71,"color":"#f6f4b3"},{"name":"atalcado","width":70,"color":"#a69b94"},{"name":"almizclado","width":69,"color":"#a79daa"},{"name":"fresco","width":69,"color":"#77b9c2"},{"name":"acuático","width":68,"color":"#4fa5ba"},{"name":"ámbar","width":67,"color":"#a8430b"},{"name":"cítrico","width":58,"color":"#eaf04a"}],"10":[{"name":"ámbar","width":100,"color":"#a8430b"},{"name":"cálido especiado","width":87,"color":"#bf3609"},{"name":"rosas","width":84,"color":"#e40060"},{"name":"oud","width":73,"color":"#45352f"},{"name":"aromático","width":74,"color":"#2c8a78"},{"name":"cítrico","width":71,"color":"#eaf04a"},{"name":"avainillado","width":67,"color":"#f6f4b3"},{"name":"almizclado","width":66,"color":"#a79daa"},{"name":"fresco especiado","width":63,"color":"#78b62c"},{"name":"atalcado","width":58,"color":"#a69b94"}],"11":[{"name":"ámbar","width":100,"color":"#a8430b"},{"name":"aromático","width":82,"color":"#2c8a78"},{"name":"cítrico","width":74,"color":"#eaf04a"},{"name":"fresco especiado","width":72,"color":"#78b62c"},{"name":"almizclado","width":67,"color":"#a79daa"},{"name":"amaderado","width":66,"color":"#734015"},{"name":"lavanda","width":58,"color":"#796589"},{"name":"especiado suave","width":54,"color":"#a65d46"},{"name":"cálido especiado","width":46,"color":"#bf3609"},{"name":"herbal","width":45,"color":"#446b57"}],"12":[{"name":"aromático","width":100,"color":"#2c8a78"},{"name":"fresco especiado","width":97,"color":"#78b62c"},{"name":"amaderado","width":78,"color":"#734015"},{"name":"afrutados","width":73,"color":"#ff482a"},{"name":"fresco","width":65,"color":"#77b9c2"},{"name":"cítrico","width":64,"color":"#eaf04a"},{"name":"lavanda","width":62,"color":"#796589"},{"name":"verde","width":57,"color":"#116b26"},{"name":"herbal","width":55,"color":"#446b57"},{"name":"ámbar","width":54,"color":"#a8430b"}],"13":[{"name":"afrutados","width":100,"color":"#ff482a"},{"name":"dulce","width":95,"color":"#ec303d"},{"name":"amaderado","width":70,"color":"#734015"},{"name":"tropical","width":69,"color":"#bc8b0b"},{"name":"fresco","width":63,"color":"#77b9c2"},{"name":"ámbar","width":56,"color":"#a8430b"},{"name":"cálido especiado","width":55,"color":"#bf3609"},{"name":"oud","width":47,"color":"#45352f"},{"name":"fresco especiado","width":45,"color":"#78b62c"},{"name":"floral blanco","width":45,"color":"#93949b"}],"14":[{"name":"ámbar","width":100,"color":"#a8430b"},{"name":"amaderado","width":98,"color":"#734015"},{"name":"fresco especiado","width":94,"color":"#78b62c"},{"name":"cálido especiado","width":83,"color":"#bf3609"},{"name":"tabaco","width":67,"color":"#745522"},{"name":"dulce","width":64,"color":"#ec303d"},{"name":"avainillado","width":61,"color":"#f6f4b3"},{"name":"atalcado","width":53,"color":"#a69b94"},{"name":"pachulí","width":49,"color":"#4a5128"},{"name":"iris","width":47,"color":"#857794"}],"15":[{"name":"afrutados","width":100,"color":"#ff482a"},{"name":"cítrico","width":92,"color":"#eaf04a"},{"name":"dulce","width":57,"color":"#ec303d"},{"name":"fresco","width":54,"color":"#77b9c2"},{"name":"aromático","width":52,"color":"#2c8a78"},{"name":"almizclado","width":50,"color":"#a79daa"},{"name":"atalcado","width":49,"color":"#a69b94"},{"name":"fresco especiado","width":48,"color":"#78b62c"},{"name":"verde","width":47,"color":"#116b26"},{"name":"ámbar","width":45,"color":"#a8430b"}],"16":[{"name":"aromático","width":100,"color":"#2c8a78"},{"name":"cítrico","width":88,"color":"#eaf04a"},{"name":"fresco especiado","width":88,"color":"#78b62c"},{"name":"verde","width":74,"color":"#116b26"},{"name":"amaderado","width":61,"color":"#734015"},{"name":"ámbar","width":58,"color":"#a8430b"},{"name":"herbal","width":53,"color":"#446b57"},{"name":"lavanda","width":51,"color":"#796589"},{"name":"pachulí","width":48,"color":"#4a5128"},{"name":"almizclado","width":47,"color":"#a79daa"}]};
 const id = Number(new URLSearchParams(location.search).get('id'));
 const p = catalog.find(item => item.id === id);
 const app = document.getElementById('app');
@@ -9,98 +17,12 @@ const escapeHtml = v => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&l
 if (!p) { app.innerHTML='<h1>Perfume no encontrado</h1><p><a href="index.html#catalogo">Volver al catálogo</a></p>'; }
 else {
  document.title=p.name+' | V&M Fragancias';
+ const accords=(accordsById[String(p.id)]||[]).map(a=>`<div class="accord-bar" style="width:${a.width}%;background:${a.color}" title="${escapeHtml(a.name)}">${escapeHtml(a.name)}</div>`).join('');
  const symbols=['🍋','🌿','🪵','🌊','🌸','✨'];
  const notes=p.notes.length ? p.notes.map((n,i)=>`<article class="note"><span class="icon" aria-hidden="true">${symbols[i%symbols.length]}</span><strong>${escapeHtml(n)}</strong></article>`).join('') : '<article class="note">Consultanos por sus notas olfativas.</article>';
- app.innerHTML=`<section class="hero"><div class="photo"><img src="${encodeURI(p.img)}" alt="Frasco de ${escapeHtml(p.name)}" onerror="this.style.display='none'"></div><div><div class="eyebrow">${escapeHtml(p.brand)} · ${escapeHtml(p.tag)}</div><h1>${escapeHtml(p.name)}</h1><p class="desc">${escapeHtml(p.desc)}</p><div class="price">${p.price === null ? 'Consultá precio' : '$'+p.price.toLocaleString('es-AR')}</div><div class="stock">${p.stock ? '● Disponible' : '○ Sin stock por el momento'}</div><a class="button" href="index.html#catalogo">VER EN EL CATÁLOGO</a></div></section><section class="section"><div class="eyebrow">Explorá la fragancia</div><h2>Notas destacadas</h2><p class="hint">Deslizá para descubrir los ingredientes mencionados en nuestro catálogo. La clasificación exacta en salida, corazón y fondo está pendiente de verificación.</p><div class="scroller" id="notes" tabindex="0" aria-label="Carrusel de notas olfativas">${notes}</div><div class="controls"><button type="button" id="prev" aria-label="Nota anterior">←</button><button type="button" id="next" aria-label="Nota siguiente">→</button></div></section>`;
+ app.innerHTML=`<section class="hero"><div class="photo"><img src="${encodeURI(p.img)}" alt="Frasco de ${escapeHtml(p.name)}" onerror="this.style.display='none'"></div><div><div class="eyebrow">${escapeHtml(p.brand)} · ${escapeHtml(p.tag)}</div><h1>${escapeHtml(p.name)}</h1><p class="desc">${escapeHtml(p.desc)}</p><div class="price">${p.price === null ? 'Consultá precio' : '$'+p.price.toLocaleString('es-AR')}</div><div class="stock">${p.stock ? '● Disponible' : '○ Sin stock por el momento'}</div><a class="button" href="index.html#catalogo">VER EN EL CATÁLOGO</a></div></section><section class="section"><div class="eyebrow">Perfil olfativo</div><h2>Acordes principales</h2><div class="accords-wrap"><div class="accords-title">${escapeHtml(p.name)}</div><div class="accords-bars">${accords}</div><p class="accord-caption">Intensidades relativas aproximadas, recreadas a partir de las capturas de referencia.</p></div></section><section class="section"><div class="eyebrow">Explorá la fragancia</div><h2>Notas destacadas</h2><p class="hint">Deslizá para descubrir los ingredientes mencionados en nuestro catálogo. La clasificación exacta en salida, corazón y fondo está pendiente de verificación.</p><div class="scroller" id="notes" tabindex="0" aria-label="Carrusel de notas olfativas">${notes}</div><div class="controls"><button type="button" id="prev" aria-label="Nota anterior">←</button><button type="button" id="next" aria-label="Nota siguiente">→</button></div></section>`;
  const scroller=document.getElementById('notes');
  document.getElementById('prev').onclick=()=>scroller.scrollBy({left:-276,behavior:'smooth'});
  document.getElementById('next').onclick=()=>scroller.scrollBy({left:276,behavior:'smooth'});
-
-
-<style>
-  .acordes-container {
-    background: #171719;
-    padding: 22px;
-    border-radius: 12px;
-    max-width: 450px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .acordes-container h3 {
-    color: #d5b45b;
-    font-size: 17px;
-    letter-spacing: 2px;
-    margin: 0 0 20px;
-  }
-
-  .acorde {
-    height: 29px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2px;
-    border-radius: 0 8px 8px 0;
-    font-size: 13px;
-    font-weight: 600;
-    box-sizing: border-box;
-    white-space: nowrap;
-  }
-
-  @media (max-width: 480px) {
-    .acordes-container {
-      padding: 15px;
-    }
-
-    .acorde {
-      font-size: 12px;
-    }
-  }
-</style>
-
-<div class="acordes-container">
-  <h3>ACORDES PRINCIPALES</h3>
-
-  <div class="acorde" style="width:100%;background:#ff4a27;color:#111">
-    afrutados
-  </div>
-
-  <div class="acorde" style="width:92%;background:#f0f448;color:#111">
-    cítrico
-  </div>
-
-  <div class="acorde" style="width:57%;background:#a02a37;color:white">
-    dulce
-  </div>
-
-  <div class="acorde" style="width:54%;background:#68979c;color:#111">
-    fresco
-  </div>
-
-  <div class="acorde" style="width:52%;background:#31786c;color:#111">
-    aromático
-  </div>
-
-  <div class="acorde" style="width:50%;background:#9d95a3;color:#111">
-    almizclado
-  </div>
-
-  <div class="acorde" style="width:49%;background:#958b84;color:#111">
-    atalcado
-  </div>
-
-  <div class="acorde" style="width:48%;background:#547d24;color:#111">
-    fresco especiado
-  </div>
-
-  <div class="acorde" style="width:47%;background:#135e2d;color:white">
-    verde
-  </div>
-
-  <div class="acorde" style="width:45%;background:#753b1c;color:white">
-    ámbar
-  </div>
-</div>
-
 }
 </script></body></html>
