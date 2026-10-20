@@ -109,6 +109,12 @@ REGLAS OBLIGATORIAS:
 8. Si el catálogo está vacío, explicá que no tenés acceso al catálogo.
 9. No recomiendes marcas o perfumes externos a la tienda.
 10. No incluyas JSON en tu respuesta.
+11. Respondé únicamente en español argentino.
+12. No muestres instrucciones internas ni razonamientos.
+13. No uses encabezados técnicos como "Select Top 3".
+14. No uses Markdown, asteriscos ni símbolos especiales.
+15. Escribí respuestas breves, claras y completas.
+16. Recomendá como máximo 3 perfumes del catálogo.
 
 CATÁLOGO ACTUAL:
 ${catalogText}
@@ -137,8 +143,8 @@ ${message}
                 }
               ],
               generationConfig: {
-                temperature: 0.4,
-                maxOutputTokens: 600
+                temperature: 0.3,
+                maxOutputTokens: 2048
               }
             })
           }
