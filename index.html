@@ -868,6 +868,26 @@ function resetQuiz() {
   renderStep('genero');
 }
 
+function formatAiReply(text) {
+  // Escapa HTML para que la respuesta no pueda insertar código en la página.
+  let safe = String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  // Convierte negritas, cursivas y listas simples de Markdown.
+  safe = safe
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|\n)\s*[-•]\s+/g, '$1• ')
+    .replace(/(^|\n)(\d+)\.\s+/g, '$1<strong>$2.</strong> ')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n/g, '<br>');
+
+  return safe;
+}
+
 async function sendAiMessage(customText = null) {
   const text = customText || chatInput.value.trim();
   if (!text) return;
@@ -893,7 +913,19 @@ async function sendAiMessage(customText = null) {
     document.getElementById(loadingId).remove();
 
     if (data.reply) {
-      chatMessages.innerHTML += `<div style="background: var(--surface2); color: var(--cream); padding: 10px 12px; border-radius: 6px; align-self: flex-start; max-width: 85%;">${data.reply}</div>`;
+      chatMessages.innerHTML += `
+        <div style="
+          background: var(--surface2);
+          color: var(--cream);
+          padding: 12px 14px;
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          align-self: flex-start;
+          max-width: 90%;
+          overflow-wrap: anywhere;
+          line-height: 1.8;
+          font-size: 12px;
+        ">${formatAiReply(data.reply)}</div>`;
     } else {
       chatMessages.innerHTML += `<div style="background: var(--surface2); color: #e05555; padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Ocurrió un error al consultar. Intentá nuevamente.</div>`;
     }
