@@ -23,6 +23,9 @@ export default async function handler(req, res) {
       ? body.catalog.decants
       : [];
 
+    console.log("PRODUCTOS RECIBIDOS:", products.length);
+    console.log("DECANTS RECIBIDOS:", decants.length);
+
     if (!message || typeof message !== "string") {
       return res.status(400).json({
         error: "El mensaje está vacío"
