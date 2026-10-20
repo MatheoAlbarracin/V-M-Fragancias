@@ -7,7 +7,21 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message, products = [], decants = [] } = req.body || {};
+    const body = req.body || {};
+
+    const message = body.message;
+
+    const products = Array.isArray(body.products)
+      ? body.products
+      : Array.isArray(body.catalog?.products)
+      ? body.catalog.products
+      : [];
+
+    const decants = Array.isArray(body.decants)
+      ? body.decants
+      : Array.isArray(body.catalog?.decants)
+      ? body.catalog.decants
+      : [];
 
     if (!message || typeof message !== "string") {
       return res.status(400).json({
