@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     const promptText = `Sos el Sommelier Virtual de V&M Fragancias. Asesorá brevemente en español argentino sobre los perfumes del catálogo. Usuario dice: ${message}`;
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey.trim()}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-8b:generateContent?key=${apiKey.trim()}`;
 
     const response = await fetch(url, {
       method: 'POST',
