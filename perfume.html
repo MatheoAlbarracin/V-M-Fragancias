@@ -15,5 +15,92 @@ else {
  const scroller=document.getElementById('notes');
  document.getElementById('prev').onclick=()=>scroller.scrollBy({left:-276,behavior:'smooth'});
  document.getElementById('next').onclick=()=>scroller.scrollBy({left:276,behavior:'smooth'});
+
+
+<style>
+  .acordes-container {
+    background: #171719;
+    padding: 22px;
+    border-radius: 12px;
+    max-width: 450px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .acordes-container h3 {
+    color: #d5b45b;
+    font-size: 17px;
+    letter-spacing: 2px;
+    margin: 0 0 20px;
+  }
+
+  .acorde {
+    height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    font-weight: 600;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 480px) {
+    .acordes-container {
+      padding: 15px;
+    }
+
+    .acorde {
+      font-size: 12px;
+    }
+  }
+</style>
+
+<div class="acordes-container">
+  <h3>ACORDES PRINCIPALES</h3>
+
+  <div class="acorde" style="width:100%;background:#ff4a27;color:#111">
+    afrutados
+  </div>
+
+  <div class="acorde" style="width:92%;background:#f0f448;color:#111">
+    cítrico
+  </div>
+
+  <div class="acorde" style="width:57%;background:#a02a37;color:white">
+    dulce
+  </div>
+
+  <div class="acorde" style="width:54%;background:#68979c;color:#111">
+    fresco
+  </div>
+
+  <div class="acorde" style="width:52%;background:#31786c;color:#111">
+    aromático
+  </div>
+
+  <div class="acorde" style="width:50%;background:#9d95a3;color:#111">
+    almizclado
+  </div>
+
+  <div class="acorde" style="width:49%;background:#958b84;color:#111">
+    atalcado
+  </div>
+
+  <div class="acorde" style="width:48%;background:#547d24;color:#111">
+    fresco especiado
+  </div>
+
+  <div class="acorde" style="width:47%;background:#135e2d;color:white">
+    verde
+  </div>
+
+  <div class="acorde" style="width:45%;background:#753b1c;color:white">
+    ámbar
+  </div>
+</div>
+
 }
 </script></body></html>
