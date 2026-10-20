@@ -1,111 +1,189 @@
+
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método no permitido' });
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Método no permitido"
+    });
   }
-
-  const { message, catalog } = req.body || {};
-  if (typeof message !== 'string' || !message.trim()) {
-    return res.status(400).json({ error: 'El mensaje está vacío' });
-  }
-
-  const apiKey = process.env.GEMINI_API_KEY?.trim();
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Falta configurar GEMINI_API_KEY en Vercel.' });
-  }
-
-  if (!catalog || !Array.isArray(catalog.products) || !Array.isArray(catalog.decants)) {
-    return res.status(400).json({ error: 'Falta el catálogo. Actualizá index.html.' });
-  }
-
-  const cleanItem = (item, kind) => ({
-    tipo: kind,
-    nombre: String(item?.name || '').slice(0, 100),
-    marca: String(item?.brand || '').slice(0, 80),
-    descripcion: kind === 'sellado' ? String(item?.desc || '').slice(0, 300) : undefined,
-    categoria: kind === 'sellado' ? String(item?.cat || '').slice(0, 30) : undefined,
-    disponible: item?.stock === true,
-    precioARS: Number.isFinite(Number(item?.priceARS)) ? Number(item.priceARS) : undefined
-  });
-  const catalogo = [
-    ...catalog.products.slice(0, 150).map(p => cleanItem(p, 'sellado')),
-    ...catalog.decants.slice(0, 150).map(d => cleanItem(d, 'decant'))
-  ].filter(p => p.nombre);
-  if (!catalogo.length) return res.status(400).json({ error: 'El catálogo está vacío.' });
-
-  const baseUrl = 'https://generativelanguage.googleapis.com/v1beta';
-  const headers = { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey };
 
   try {
-    // Consultamos los modelos realmente disponibles para esta clave.
-    let models = [];
-    let pageToken;
-    do {
-      const params = new URLSearchParams({ pageSize: '1000' });
-      if (pageToken) params.set('pageToken', pageToken);
-      const listResponse = await fetch(`${baseUrl}/models?${params}`, { headers });
-      const listData = await listResponse.json();
-      if (!listResponse.ok) {
-        console.error('Gemini ListModels:', listResponse.status, listData);
-        return res.status(502).json({ error: listData.error?.message || 'No se pudieron consultar los modelos de Gemini.' });
-      }
-      models.push(...(listData.models || []));
-      pageToken = listData.nextPageToken;
-    } while (pageToken);
+    const { message, products = [], decants = [] } = req.body || {};
 
-    const available = models.filter(m =>
-      m.name?.startsWith('models/gemini-') &&
-      m.supportedGenerationMethods?.includes('generateContent') &&
-      !/embedding|image|tts|audio|robotics|computer-use/i.test(m.name)
+    if (!message || typeof message !== "string") {
+      return res.status(400).json({
+        error: "El mensaje está vacío"
+      });
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY?.trim();
+
+    if (!apiKey) {
+      return res.status(500).json({
+        error: "Falta configurar GEMINI_API_KEY en Vercel."
+      });
+    }
+
+    // Consultar modelos disponibles para esta API Key
+    const modelsResponse = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models",
+      {
+        headers: {
+          "x-goog-api-key": apiKey
+        }
+      }
     );
 
-    const preferred = process.env.GEMINI_MODEL?.trim().replace(/^models\//, '');
-    const candidates = available.sort((a, b) => {
-      const rank = m => {
-        const name = m.name.replace(/^models\//, '');
-        if (preferred && name === preferred) return -100;
-        if (/flash/i.test(name) && !/preview|exp|lite/i.test(name)) return 0;
-        if (/flash-lite/i.test(name) && !/preview|exp/i.test(name)) return 1;
-        if (/flash/i.test(name)) return 2;
-        if (/pro/i.test(name)) return 3;
-        return 4;
+    const modelsData = await modelsResponse.json();
+
+    if (!modelsResponse.ok) {
+      return res.status(modelsResponse.status).json({
+        error: modelsData.error?.message ||
+          "No se pudieron consultar los modelos de Gemini."
+      });
+    }
+
+    const availableModels = (modelsData.models || [])
+      .filter(model =>
+        model.supportedGenerationMethods?.includes("generateContent") &&
+        model.name?.includes("gemini") &&
+        !model.name.includes("embedding") &&
+        !model.name.includes("image") &&
+        !model.name.includes("tts")
+      );
+
+    // Preferir modelos Flash para responder rápido
+    availableModels.sort((a, b) => {
+      const score = model => {
+        const name = model.name.toLowerCase();
+        if (name.includes("2.5-flash")) return 100;
+        if (name.includes("flash")) return 80;
+        if (name.includes("pro")) return 40;
+        return 10;
       };
-      return rank(a) - rank(b);
+
+      return score(b) - score(a);
     });
 
-    if (!candidates.length) {
-      return res.status(502).json({ error: 'Tu API Key no tiene modelos de texto disponibles para generateContent.' });
+    if (!availableModels.length) {
+      return res.status(500).json({
+        error: "Tu API Key no tiene modelos compatibles disponibles."
+      });
     }
 
-    const prompt = `Sos el Sommelier Virtual de V&M Fragancias, una perfumería argentina.
-El siguiente JSON es el catálogo ACTUAL de la tienda. Solo podés recomendar perfumes que aparezcan en este JSON. Los productos con disponible=false están agotados: no los ofrezcas como disponibles. Distinguí claramente los frascos sellados de los decants; un perfume puede estar agotado en sellado pero disponible como decant. Usá solo precios indicados y expresalos en pesos argentinos. No inventes productos, notas, precios ni stock. Si no hay una opción adecuada disponible, decilo y preguntá si quiere explorar otras familias olfativas. Recomendá de 1 a 3 opciones relevantes según el pedido, explicando brevemente por qué. Si la consulta pide un producto agotado, informá el estado y ofrecé alternativas disponibles del catálogo. Respondé en español argentino, claro y cálido, sin mencionar el JSON.
+    // Preparar catálogo recibido desde la página
+    const formatCatalog = (items, type) => {
+      if (!Array.isArray(items)) return "";
 
-CATÁLOGO:
-${JSON.stringify(catalogo)}
+      return items.map(item => {
+        const name = item.name || item.nombre || "Sin nombre";
+        const description = item.description || item.descripcion || "";
+        const price = item.price ?? item.precio ?? "No informado";
+        const stock = item.stock ?? item.available ?? item.disponible ?? "No informado";
+
+        return `- ${name} | Tipo: ${type} | Descripción: ${description} | Precio: ${price} | Stock: ${stock}`;
+      }).join("\n");
+    };
+
+    const catalogText = [
+      "PERFUMES SELLADOS:",
+      formatCatalog(products, "Perfume sellado"),
+      "",
+      "DECANTS:",
+      formatCatalog(decants, "Decant")
+    ].join("\n");
+
+    const prompt = `
+Sos el Sommelier Virtual de V&M Fragancias, una tienda de perfumes.
+
+Respondé siempre en español argentino, de manera amable,
+profesional, breve y natural.
+
+REGLAS OBLIGATORIAS:
+1. Recomendá únicamente perfumes que figuren en el catálogo recibido.
+2. Nunca inventes productos, precios, stock ni características.
+3. Priorizá los productos disponibles.
+4. Diferenciá perfumes sellados de decants.
+5. Recomendá como máximo 3 productos por consulta.
+6. Explicá brevemente por qué cada perfume encaja con lo que busca el cliente.
+7. Si no hay productos adecuados, decilo claramente.
+8. Si el catálogo está vacío, explicá que no tenés acceso al catálogo.
+9. No recomiendes marcas o perfumes externos a la tienda.
+10. No incluyas JSON en tu respuesta.
+
+CATÁLOGO ACTUAL:
+${catalogText}
 
 CONSULTA DEL CLIENTE:
-${message.trim().slice(0, 1500)}`;
-    let lastError = 'No se pudo generar una respuesta.';
+${message}
+`;
 
-    for (const model of candidates.slice(0, 5)) {
-      const response = await fetch(`${baseUrl}/${model.name}:generateContent`, {
-        method: 'POST', headers,
-        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }] })
-      });
-      const data = await response.json();
-      if (response.ok) {
-        const reply = data.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim();
-        if (reply) return res.status(200).json({ reply });
-        lastError = 'Gemini no devolvió texto.';
-      } else {
-        console.error(`Gemini ${model.name}:`, response.status, data);
-        lastError = data.error?.message || `Error HTTP ${response.status}`;
-        // No probar otros modelos si la clave es inválida o se agotó la cuota.
-        if ([401, 403, 429].includes(response.status)) break;
+    let lastError = "No se pudo generar una respuesta.";
+
+    for (const model of availableModels.slice(0, 8)) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/${model.name}:generateContent`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": apiKey
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  role: "user",
+                  parts: [{ text: prompt }]
+                }
+              ],
+              generationConfig: {
+                temperature: 0.4,
+                maxOutputTokens: 600
+              }
+            })
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          lastError = data.error?.message || "Error de Gemini";
+
+          // No insistir si el problema es la API Key o la cuota
+          if (response.status === 401 ||
+              response.status === 403 ||
+              response.status === 429) {
+            return res.status(response.status).json({
+              error: lastError
+            });
+          }
+
+          continue;
+        }
+
+        const reply = data.candidates?.[0]?.content?.parts
+          ?.map(part => part.text || "")
+          .join("")
+          .trim();
+
+        if (reply) {
+          return res.status(200).json({ reply });
+        }
+
+        lastError = "Gemini devolvió una respuesta vacía.";
+
+      } catch (error) {
+        lastError = error.message;
       }
     }
-    return res.status(502).json({ error: lastError });
-  } catch (err) {
-    console.error('Sommelier API:', err);
-    return res.status(500).json({ error: 'No se pudo conectar con Gemini.' });
+
+    return res.status(502).json({
+      error: lastError
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      error: "Error del servidor: " + error.message
+    });
   }
 }
