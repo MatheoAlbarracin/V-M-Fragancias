@@ -648,8 +648,12 @@ function renderProducts(filter) {
       <div class="product-desc">${p.desc}</div>
       <div class="product-footer">
         <div>
-          <div class="product-price">$${ars.toLocaleString('es-AR')}</div>
-          <div style="font-size:10px; color:var(--muted); letter-spacing:1px">USD ${p.usd}</div>
+          <div class="product-price">
+            ${p.usd == null ? 'Consultar precio' : '$' + ars.toLocaleString('es-AR')}
+          </div>
+          <div style="font-size:10px; color:var(--muted); letter-spacing:1px">
+            ${p.usd == null ? 'Precio pendiente' : 'USD ' + p.usd}
+          </div>
         </div>
         ${actionElement}
       </div>
