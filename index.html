@@ -489,6 +489,45 @@ nav {
     .cart-panel { width: 100%; }
     footer { flex-direction: column; gap: 16px; text-align: center; }
   }
+
+  /* VENTAS POR MAYOR */
+
+.mayor-section {
+  background: #0a0a0a;
+  text-align: center;
+  padding: 100px 24px;
+  border-top: 1px solid rgba(201,168,76,0.18);
+  border-bottom: 1px solid rgba(201,168,76,0.18);
+}
+
+.mayor-section .section-title {
+  margin: 0 auto 24px;
+  max-width: none;
+}
+
+.mayor-desc {
+  max-width: 550px;
+  margin: 0 auto 40px;
+  font-size: 14px;
+  color: #999;
+  line-height: 1.9;
+}
+
+.mayor-btn {
+  display: inline-block;
+  padding: 17px 36px;
+  border: 1px solid #c9a84c;
+  color: #c9a84c;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 2px;
+  transition: 0.3s;
+}
+
+.mayor-btn:hover {
+  background: #c9a84c;
+  color: #0a0a0a;
+}
 .product-img-wrap.photo-pending::after{content:"Foto próximamente";color:#9a8c6e;font-size:12px;letter-spacing:1px;display:grid;place-items:center;min-height:150px;text-align:center}</style>
 </head>
 <body>
@@ -510,6 +549,7 @@ nav {
   <ul class="nav-links">
     <li><a href="#catalogo">Catálogo</a></li>
     <li><a href="#decants">Decants</a></li>
+    <li><a href="#mayor">Por mayor</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
@@ -552,7 +592,31 @@ nav {
   <h2 class="section-title">Decants 5ml</h2>
   <div class="decants-grid" id="decantsGrid"></div>
 </section>
+  
+<!-- VENTAS POR MAYOR -->
+<section id="mayor" class="mayor-section">
+  <p class="section-label">OPORTUNIDADES V&M</p>
 
+  <h2 class="section-title">
+    Ventas por mayor
+  </h2>
+
+  <p class="mayor-desc">
+    ¿Tenés un negocio o querés empezar a revender perfumes?
+    Consultanos por nuestros precios mayoristas y
+    descubrí las oportunidades que tenemos para vos.
+  </p>
+
+  <a
+    href="https://wa.me/5491139457935?text=Hola%21%20Me%20interesa%20conocer%20los%20precios%20por%20mayor%20de%20V%26M%20Fragancias."
+    target="_blank"
+    rel="noopener noreferrer"
+    class="mayor-btn"
+  >
+    CONSULTAR POR WHATSAPP ↗
+  </a>
+</section>
+  
 <!-- NOSOTROS -->
 <section id="nosotros">
   <div class="about-quote">"El perfume es la forma más intensa del recuerdo."</div>
