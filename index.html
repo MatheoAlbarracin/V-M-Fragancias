@@ -49,9 +49,11 @@
     font-weight: 500;
   }
   
-  .product-card.out-of-stock { opacity: 1; }
+  .product-card.out-of-stock { opacity: 0.85; }
   .product-card.out-of-stock:hover { background: var(--surface2); }
 
+  .stock-status { margin-bottom: 14px; min-height: 25px; display: flex; align-items: center; }
+  .stock-status .out-of-stock-badge { display: inline-block; }
   .reserve-btn { background:transparent; border:1px solid var(--gold); color:var(--gold); padding:10px 12px; cursor:pointer; font-size:10px; letter-spacing:.7px; text-transform:uppercase; }
   .reserve-btn:hover { background:var(--gold); color:var(--black); }
   .reserve-tag { color:var(--gold); font-size:10px; letter-spacing:.4px; margin-top:5px; }
@@ -654,6 +656,7 @@ function renderProducts(filter) {
         <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('photo-pending')">
       </div>
       <div class="product-tag">${p.tag}</div>
+      ${!hasStock ? `<div class="stock-status"><span class="out-of-stock-badge">SIN STOCK</span></div>` : ''}
       <div class="product-name">${p.name}</div>
       <div class="product-brand">${p.brand}</div>
       <div class="product-desc">${p.desc}</div>
