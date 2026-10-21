@@ -448,7 +448,7 @@
     .cart-panel { width: 100%; }
     footer { flex-direction: column; gap: 16px; text-align: center; }
   }
-</style>
+.product-img-wrap.photo-pending::after{content:"Foto próximamente";color:#9a8c6e;font-size:12px;letter-spacing:1px;display:grid;place-items:center;min-height:150px;text-align:center}</style>
 </head>
 <body>
 
@@ -596,19 +596,23 @@ const products = [
   { id:14, name:'Maison Alhambra Salvo Elixir',brand:'Maison Alhambra',tag:'HOMBRE', usd:36.00 , desc:'Amaderado intenso con notas de vetiver, cedro y almizcle. Elegante y moderno.',        cat:'hombre', img:'SALVO_ELIXIR.jpg', stock: false },
   { id:15, name:'Hawas Ice',                   brand:'Rasasi',         tag:'HOMBRE', usd:52.00 , desc:'Versión helada del Hawas. Notas de menta ártica, almizcle marino y madera fría.',       cat:'hombre', img:'HAWAS_ICE.avif', stock: true},
   { id:16, name:'Odyssey Aqua',                brand:'Odyssey',        tag:'UNISEX', usd:39.70 , desc:'Acuático fresco con notas de bergamota, algas marinas y base amaderada.',               cat:'unisex', img:'ODYSSEY_AQUA.avif', stock: true },
-
-  { id: 17, name: 'Odyssey Mandarin Sky',    brand: 'Armaf',    tag: 'HOMBRE',    usd: 41.00,    desc: 'Dulce, cítrico y acaramelado. Ideal para salidas y noches frescas.',    cat: 'hombre',    img: 'MANDARIN_SKY.avif',   stock: false},
-  { id: 18, name: 'Yara Candy',    brand: 'Lattafa',    tag: 'MUJER',    usd: 34.00,    desc: 'Golosina de frutilla, frutas jugosas y vainilla. Dulce y juvenil.',    cat: 'mujer',    img: 'YARA_CANDY.avif',    stock: false},
-  { id: 19, name: 'Yara Tous',    brand: 'Lattafa',    tag: 'MUJER',    usd: 33.00,    desc: 'Tropical y cremoso, con mango, coco, maracuyá y vainilla.',    cat: 'mujer',    img: 'YARA_TOUS.avif',    stock: true},
-  { id: 20,    name: 'Yara Moi',    brand: 'Lattafa',    tag: 'MUJER',    usd: null,    desc: 'Floral blanco y elegante, con pera, jazmín, almendra y vainilla.',    cat: 'mujer',    img: 'YARA_MOI.avif',    stock: false},
-  { id: 21,   name: 'Yara',    brand: 'Lattafa',    tag: 'MUJER',    usd: null,    desc: 'El clásico Yara rosa. Dulce, cremoso, floral y avainillado.',    cat: 'mujer',    img: 'YARA_ROSA.avif',    stock: false},
-  { id: 22,    name: 'Eclaire',    brand: 'Lattafa',    tag: 'MUJER',    usd: 34.00,    desc: 'Gourmand de caramelo, leche, miel y vainilla. Ideal para amantes de los perfumes dulces.',    cat: 'mujer',    img: 'ECLAIRE.avif',    stock: false},
-  { id: 23,   name: 'Khamrah Qahwa',    brand: 'Lattafa',    tag: 'UNISEX',    usd: 32.00,    desc: 'Cálido y especiado, con café, canela, vainilla y un fondo gourmand.',    cat: 'unisex',    img: 'KHAMRAH_QAWHA.avif',    stock: false},
-  { id: 24,    name: 'Khamrah',    brand: 'Lattafa',    tag: 'UNISEX',    usd: 46,    desc: 'Dulce y especiado, con canela, dátiles, praliné y vainilla.',    cat: 'unisex',    img: 'KHAMRAH.avif',    stock: false},
-  { id: 25,    name: "Bade'e Al Oud Oud for Glory",    brand: 'Lattafa',    tag: 'UNISEX',    usd: null,    desc: 'Intenso, amaderado y oriental, con oud, azafrán y pachulí.',    cat: 'unisex', img: 'OUD_FOR_GLORY.avif', stock: false },
+  {"id": 17, "name": "Odyssey Mandarin Sky", "brand": "Armaf", "tag": "HOMBRE", "usd": 41.0, "desc": "Cítrico, dulce y acaramelado.", "cat": "hombre", "img": "MANDARIN_SKY.avif", "stock": false},
+  {"id": 18, "name": "Yara Candy", "brand": "Lattafa", "tag": "MUJER", "usd": 41, "desc": "Avainillado, afrutado y dulce.", "cat": "mujer", "img": "YARA_CANDY.avif", "stock": false},
+  {"id": 19, "name": "Yara Tous", "brand": "Lattafa", "tag": "MUJER", "usd": 32, "desc": "Tropical, dulce y floral blanco.", "cat": "mujer", "img": "YARA_TOUS.avif", "stock": false},
+  {"id": 20, "name": "Yara Moi", "brand": "Lattafa", "tag": "MUJER", "usd": 36, "desc": "Amaderado, floral blanco y especiado.", "cat": "mujer", "img": "YARA_MOI.avif", "stock": false},
+  {"id": 21, "name": "Yara", "brand": "Lattafa", "tag": "MUJER", "usd": 41, "desc": "Dulce, avainillado y atalcado.", "cat": "mujer", "img": "YARA_ROSA.jpeg", "stock": false},
+  {"id": 22, "name": "Eclaire", "brand": "Lattafa", "tag": "MUJER", "usd": 62, "desc": "Dulce, avainillado, acaramelado y lactónico.", "cat": "mujer", "img": "ECLAIRE.avif", "stock": false},
+  {"id": 23, "name": "Khamrah Qahwa", "brand": "Lattafa", "tag": "UNISEX", "usd": 33, "desc": "Cálido especiado, dulce y café.", "cat": "unisex", "img": "KHAMRAH_QAWHA.avif", "stock": false},
+  {"id": 24, "name": "Khamrah", "brand": "Lattafa", "tag": "UNISEX", "usd": 47, "desc": "Dulce, cálido especiado y avainillado.", "cat": "unisex", "img": "KHAMRAH.avif", "stock": false},
+  {"id": 25, "name": "Bade'e Al Oud Oud for Glory", "brand": "Lattafa", "tag": "UNISEX", "usd": 35, "desc": "Oud, cálido especiado y pachulí.", "cat": "unisex", "img": "OUD_FOR_GLORY.avif", "stock": false},
+  {"id": 26, "name": "Haya", "brand": "Lattafa", "tag": "MUJER", "usd": 39, "desc": "Próximamente: descripción olfativa.", "cat": "mujer", "img": "HAYA.avif", "stock": false},
+  {"id": 27, "name": "Mayar", "brand": "Lattafa", "tag": "MUJER", "usd": 32, "desc": "Próximamente: descripción olfativa.", "cat": "mujer", "img": "MAYAR.avif", "stock": false},
+  {"id": 28, "name": "9AM Pour Femme", "brand": "Afnan", "tag": "MUJER", "usd": 46, "desc": "Próximamente: descripción olfativa.", "cat": "mujer", "img": "9AM_POUR_FEMME.avif", "stock": false},
+  {"id": 29, "name": "Vulcan Feu", "brand": "French Avenue", "tag": "UNISEX", "usd": 62, "desc": "Próximamente: descripción olfativa.", "cat": "unisex", "img": "VULCAN_FEU.avif", "stock": false},
+  {"id": 30, "name": "Bharara King", "brand": "Bharara", "tag": "HOMBRE", "usd": 74, "desc": "Próximamente: descripción olfativa.", "cat": "hombre", "img": "BHARARA_KING.avif", "stock": false},
 ];
 
-function arsPrice(usd) { return Math.round(usd * USD); }
+function arsPrice(usd) { return usd == null ? null : Math.round(usd * USD); }
 
 const decants = [
   { id:101, name:'9PM',                brand:'Afnan',   ars: 4499, stock: true },
@@ -630,7 +634,7 @@ function renderProducts(filter) {
   const list = filter === 'todos' ? products : products.filter(p => p.cat === filter);
   grid.innerHTML = list.map(p => {
     const ars = arsPrice(p.usd);
-    const hasStock = p.stock !== false;
+    const hasStock = p.stock !== false && ars !== null;
     const actionElement = hasStock 
       ? `<button class="add-btn" data-id="${p.id}" data-name="${p.name}" data-brand="${p.brand}" data-price="${ars}" data-type="Sellado">+</button>`
       : `<span class="out-of-stock-badge">Agotado</span>`;
@@ -638,7 +642,7 @@ function renderProducts(filter) {
     return `
     <div class="product-card ${hasStock ? '' : 'out-of-stock'}" data-perfume-id="${p.id}" role="link" tabindex="0" aria-label="Ver detalles de ${p.name}">
       <div class="product-img-wrap">
-        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('photo-pending')">
       </div>
       <div class="product-tag">${p.tag}</div>
       <div class="product-name">${p.name}</div>
@@ -646,12 +650,8 @@ function renderProducts(filter) {
       <div class="product-desc">${p.desc}</div>
       <div class="product-footer">
         <div>
-          <div class="product-price">
-            ${p.usd == null ? 'Consultar precio' : '$' + ars.toLocaleString('es-AR')}
-          </div>
-          <div style="font-size:10px; color:var(--muted); letter-spacing:1px">
-            ${p.usd == null ? 'Precio pendiente' : 'USD ' + p.usd}
-          </div>
+          <div class="product-price">${ars === null ? 'Consultá precio' : '$'+ars.toLocaleString('es-AR')}</div>
+          ${p.usd == null ? '' : `<div style="font-size:10px; color:var(--muted); letter-spacing:1px">USD ${p.usd}</div>`}
         </div>
         ${actionElement}
       </div>
