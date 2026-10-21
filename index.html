@@ -49,17 +49,15 @@
     font-weight: 500;
   }
   
-  .product-card.out-of-stock { opacity: 0.85; }
-  .product-card.out-of-stock:hover { background: var(--surface2); }
+  .product-card.out-of-stock { opacity: 0.88; }
+  .product-card.out-of-stock:hover { background: var(--black); }
 
-  .stock-status { margin-bottom: 14px; min-height: 25px; display: flex; align-items: center; }
-  .stock-status .out-of-stock-badge { display: inline-block; }
-  .reserve-btn { background:transparent; border:1px solid var(--gold); color:var(--gold); padding:10px 12px; cursor:pointer; font-size:10px; letter-spacing:.7px; text-transform:uppercase; }
-  .reserve-btn:hover { background:var(--gold); color:var(--black); }
-  .reserve-tag { color:var(--gold); font-size:10px; letter-spacing:.4px; margin-top:5px; }
-  .reserve-summary { border-top:1px solid var(--border); padding-top:12px; margin-bottom:14px; font-size:12px; line-height:1.8; }
-  .reserve-summary div { display:flex; justify-content:space-between; gap:12px; }
-  .reserve-summary strong { color:var(--gold); }
+  .reserve-btn {background:transparent;border:1px solid var(--gold);color:var(--gold);padding:10px 12px;cursor:pointer;font:500 10px 'Inter',sans-serif;letter-spacing:.5px;max-width:155px;line-height:1.4;text-align:center}
+  .reserve-btn:hover {background:var(--gold);color:var(--black)}
+  .stock-status {margin-bottom:12px}
+  .reserve-summary {border-top:1px solid var(--border);padding-top:14px;margin-bottom:16px;font-size:12px}
+  .reserve-summary div {display:flex;justify-content:space-between;gap:12px;margin-bottom:9px}
+  .reserve-summary strong {color:var(--gold)}
   /* ── PRODUCT IMAGE ── */
   .product-img-wrap {
     background: #0d0d0d;
@@ -551,7 +549,7 @@
       <span class="cart-total-label">Total</span>
       <span class="cart-total-price" id="cartTotal">$0</span>
     </div>
-    <div class="reserve-summary" id="reserveSummary" style="display:none"></div>
+    <div id="reserveSummary" class="reserve-summary" style="display:none"></div>
     <button class="whatsapp-checkout" id="waBtn">Pedir por WhatsApp</button>
   </div>
 </div>
@@ -645,9 +643,9 @@ function renderProducts(filter) {
     const ars = arsPrice(p.usd);
     const hasStock = p.stock !== false && ars !== null;
     const actionElement = hasStock
-      ? `<button class="add-btn" data-id="${p.id}" data-name="${p.name}" data-brand="${p.brand}" data-price="${ars}" data-type="Sellado">+</button>`
+      ? `<button type="button" class="add-btn" data-id="${p.id}" title="Agregar al carrito" aria-label="Agregar ${p.name} al carrito">+</button>`
       : ars !== null
-        ? `<button class="reserve-btn" data-id="${p.id}" data-name="${p.name}" data-brand="${p.brand}" data-price="${ars}" data-type="Sellado" data-reserve="true">Reservar por encargo</button>`
+        ? `<button type="button" class="reserve-btn" data-id="${p.id}" aria-label="Reservar ${p.name} por encargo">Reservar por encargo</button>`
         : `<span class="out-of-stock-badge">Consultar precio</span>`;
 
     return `
@@ -693,9 +691,20 @@ function renderDecants() {
   }).join('');
 }
 
-// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
+// Un solo manejador: botones agregan al carrito; el resto abre la ficha.
 document.getElementById('productGrid').addEventListener('click', e => {
-  if (e.target.closest('button')) return;
+  const btn = e.target.closest('button[data-id]');
+  if (btn) {
+    e.preventDefault();
+    const p = products.find(x => x.id === Number(btn.dataset.id));
+    if (!p) return;
+    const price = arsPrice(p.usd);
+    if (price === null) return;
+    const reserve = p.stock === false;
+    addToCart(p.id, p.name, p.brand, price, 'Sellado', reserve);
+    if (reserve && !document.getElementById('cartPanel').classList.contains('open')) toggleCart();
+    return;
+  }
   const card = e.target.closest('[data-perfume-id]');
   if (card) location.href = 'perfume.html?id=' + encodeURIComponent(card.dataset.perfumeId);
 });
@@ -705,23 +714,6 @@ document.getElementById('productGrid').addEventListener('keydown', e => {
     location.href = 'perfume.html?id=' + encodeURIComponent(e.target.dataset.perfumeId);
   }
 });
-
-
-// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
-
-
-
-
-// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
-// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
-
-
-
-
-// Abrir la ficha al tocar una tarjeta (sin interferir con el carrito)
-
-
-
 
 document.getElementById('decantsGrid').addEventListener('click', e => {
   const btn = e.target.closest('button[data-id]');
@@ -783,28 +775,27 @@ function updateCartUI() {
         <p>Tu carrito está vacío</p>
       </div>`;
     footerEl.style.display = 'none';
+    document.getElementById('reserveSummary').style.display = 'none';
     return;
   }
 
   footerEl.style.display = 'block';
   document.getElementById('cartTotal').textContent = '$' + total.toLocaleString('es-AR');
   const reserveTotal = cart.filter(i => i.reserve).reduce((sum, i) => sum + i.price * i.qty, 0);
-  const reserveSummary = document.getElementById('reserveSummary');
-  reserveSummary.style.display = reserveTotal > 0 ? 'block' : 'none';
-  reserveSummary.innerHTML = reserveTotal > 0 ? `
+  const summary = document.getElementById('reserveSummary');
+  summary.style.display = reserveTotal ? 'block' : 'none';
+  summary.innerHTML = reserveTotal ? `
     <div><span>Productos por encargo</span><span>$${reserveTotal.toLocaleString('es-AR')}</span></div>
     <div><span>Seña a coordinar (50%)</span><strong>$${(reserveTotal / 2).toLocaleString('es-AR')}</strong></div>
-    <div><span>Saldo de reservas (50%)</span><span>$${(reserveTotal / 2).toLocaleString('es-AR')}</span></div>
-    <p style="color:var(--muted);font-size:10px;margin-top:8px">Reserva pendiente. Se confirma por WhatsApp al acordar y verificar la seña. Los productos disponibles se coordinan aparte.</p>
-  ` : '';
-  document.getElementById('waBtn').textContent = reserveTotal > 0 ? 'Coordinar pedido y reserva por WhatsApp' : 'Pedir por WhatsApp';
+    <div><span>Saldo pendiente (50%)</span><span>$${(reserveTotal / 2).toLocaleString('es-AR')}</span></div>
+    <p style="color:var(--muted);font-size:11px;line-height:1.5">La reserva se confirma al coordinar y verificar la seña por WhatsApp.</p>` : '';
+  document.getElementById('waBtn').textContent = reserveTotal ? 'Coordinar pedido y reserva por WhatsApp' : 'Pedir por WhatsApp';
 
   itemsEl.innerHTML = cart.map(i => `
     <div class="cart-item">
       <div class="cart-item-info">
         <div class="cart-item-name">${i.name}</div>
-        <div class="cart-item-detail">${i.brand} · ${i.type}</div>
-        ${i.reserve ? `<div class="reserve-tag">RESERVA PENDIENTE · Seña 50%: $${(i.price * i.qty / 2).toLocaleString('es-AR')}</div>` : ''}
+        <div class="cart-item-detail">${i.brand} · ${i.type}${i.reserve ? ' · RESERVA PENDIENTE' : ''}</div>
       </div>
       <div class="cart-item-right">
         <div class="cart-item-price">$${(i.price * i.qty).toLocaleString('es-AR')}</div>
@@ -834,8 +825,8 @@ document.getElementById('waBtn').addEventListener('click', () => {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const reserveTotal = cart.filter(i => i.reserve).reduce((s, i) => s + i.price * i.qty, 0);
   const availableTotal = total - reserveTotal;
-  const msg = `¡Hola! Quiero coordinar este pedido en V&M Fragancias:\n\n${lines.join('\n')}\n\n*Total del pedido: ${money(total)}*${reserveTotal ? `\n*Productos por encargo: ${money(reserveTotal)}*\n*Seña del 50% a coordinar: ${money(reserveTotal / 2)}*\n*Saldo de reservas: ${money(reserveTotal / 2)}*\n${availableTotal ? `Productos disponibles: ${money(availableTotal)}\n` : ''}\nLa reserva está pendiente de confirmación. Quisiera coordinar por WhatsApp la seña y la disponibilidad estimada.` : ''}\n\n¡Gracias!`;
-  window.open(`https://wa.me/5491139457935?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+  const msg = `¡Hola! Quiero coordinar este pedido en V&M Fragancias:\n\n${lines.join('\n')}\n\n*Total del pedido: ${money(total)}*${reserveTotal ? `\n*Productos por encargo: ${money(reserveTotal)}*\n*Seña del 50% a coordinar: ${money(reserveTotal / 2)}*\n*Saldo de reservas: ${money(reserveTotal / 2)}*\n${availableTotal ? `Productos disponibles: ${money(availableTotal)}\n` : ''}Quisiera coordinar la seña y la disponibilidad estimada. La reserva está pendiente de confirmación.` : ''}\n\n¡Gracias!`;
+  window.open(`https://wa.me/5491139457935?text=${encodeURIComponent(msg)}`, '_blank');
 });
 
 let currentFilter = 'todos';
