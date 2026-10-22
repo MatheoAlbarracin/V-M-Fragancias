@@ -544,6 +544,31 @@ nav {
 .filter-result-count { color:var(--muted); font-size:12px; margin-bottom:18px; }
 .filter-empty { grid-column:1/-1; padding:55px 18px; text-align:center; color:var(--muted); line-height:1.8; }
 @media (max-width:768px) { .catalog-extra-filters { gap:10px; } .catalog-filter-field { flex:1 1 145px; min-width:0; } }
+
+/* ASESOR VIRTUAL RESPONSIVE */
+@media (max-width: 768px) {
+  #aiChatWidget {
+    bottom: 16px !important;
+    left: 16px !important;
+    right: auto !important;
+  }
+
+  #aiChatToggle {
+    padding: 11px 15px !important;
+    font-size: 11px !important;
+  }
+
+  #aiChatBox {
+    width: min(340px, calc(100vw - 32px)) !important;
+    height: min(460px, calc(100dvh - 110px)) !important;
+    max-height: 75dvh !important;
+  }
+}
+
+/* Cuando se abre el carrito, ocultamos el asesor */
+body.cart-open #aiChatWidget {
+  display: none !important;
+}
 </style>
 </head>
 <body>
