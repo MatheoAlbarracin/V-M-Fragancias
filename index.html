@@ -997,9 +997,20 @@ function updateCartUI() {
 }
 
 function toggleCart() {
-  document.getElementById('cartPanel').classList.toggle('open');
-  document.getElementById('cartOverlay').classList.toggle('open');
+  const panel = document.getElementById('cartPanel');
+  const overlay = document.getElementById('cartOverlay');
+
+  const abierto = panel.classList.toggle('open');
+  overlay.classList.toggle('open', abierto);
+
+  document.body.classList.toggle('cart-open', abierto);
+
+  if (abierto) {
+    const chatBox = document.getElementById('aiChatBox');
+    if (chatBox) chatBox.style.display = 'none';
+  }
 }
+  
 document.getElementById('cartToggleBtn').addEventListener('click', toggleCart);
 document.getElementById('cartCloseBtn').addEventListener('click', toggleCart);
 document.getElementById('cartOverlay').addEventListener('click', toggleCart);
