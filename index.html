@@ -115,9 +115,7 @@ nav {
   /* ── NAV ── */
   nav {
     position: fixed;
-    top: 34px; 
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     z-index: 100;
     display: flex;
     justify-content: space-between;
@@ -544,31 +542,6 @@ nav {
 .filter-result-count { color:var(--muted); font-size:12px; margin-bottom:18px; }
 .filter-empty { grid-column:1/-1; padding:55px 18px; text-align:center; color:var(--muted); line-height:1.8; }
 @media (max-width:768px) { .catalog-extra-filters { gap:10px; } .catalog-filter-field { flex:1 1 145px; min-width:0; } }
-
-/* ASESOR VIRTUAL RESPONSIVE */
-@media (max-width: 768px) {
-  #aiChatWidget {
-    bottom: 16px !important;
-    left: 16px !important;
-    right: auto !important;
-  }
-
-  #aiChatToggle {
-    padding: 11px 15px !important;
-    font-size: 11px !important;
-  }
-
-  #aiChatBox {
-    width: min(340px, calc(100vw - 32px)) !important;
-    height: min(460px, calc(100dvh - 110px)) !important;
-    max-height: 75dvh !important;
-  }
-}
-
-/* Cuando se abre el carrito, ocultamos el asesor */
-body.cart-open #aiChatWidget {
-  display: none !important;
-}
 </style>
 </head>
 <body>
@@ -748,7 +721,7 @@ body.cart-open #aiChatWidget {
     <div id="aiQuickOptions" style="padding: 10px 12px; background: var(--surface2); border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; max-height: 120px; overflow-y: auto;"></div>
 
     <div style="padding: 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: var(--black);">
-      <input type="text" id="aiChatInput" placeholder="O escribí tu consulta..." style="flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--cream); padding: 8px 12px; font-size: 12px; outline: none; border-radius: 4px;">
+      <input type="text" id="aiChatInput" placeholder="Preguntame lo que quieras..." style="flex: 1; background: var(--surface); border: 1px solid var(--border); color: var(--cream); padding: 8px 12px; font-size: 12px; outline: none; border-radius: 4px;">
       <button id="aiChatSend" style="background: var(--gold); color: var(--black); border: none; padding: 8px 14px; font-weight: 500; cursor: pointer; border-radius: 4px; font-size: 12px;">></button>
     </div>
   </div>
@@ -776,7 +749,7 @@ const products = [
   { id:16, name:'Odyssey Aqua',                brand:'Odyssey',        tag:'UNISEX', usd:39.70 , desc:'Acuático fresco con notas de bergamota, algas marinas y base amaderada.',               cat:'unisex', img:'ODYSSEY_AQUA.avif', stock: true },
   {"id": 17, "name": "Odyssey Mandarin Sky", "brand": "Armaf", "tag": "HOMBRE", "usd": 41.0, "desc": "Cítrico, dulce y acaramelado.", "cat": "hombre", "img": "MANDARIN_SKY.avif", "stock": false},
   {"id": 18, "name": "Yara Candy", "brand": "Lattafa", "tag": "MUJER", "usd": 41, "desc": "Avainillado, afrutado y dulce.", "cat": "mujer", "img": "YARA_CANDY.avif", "stock": false},
-  {"id": 19, "name": "Yara Tous", "brand": "Lattafa", "tag": "MUJER", "usd": 32, "desc": "Tropical, dulce y floral blanco.", "cat": "mujer", "img": "YARA_TOUS.avif", "stock": true},
+  {"id": 19, "name": "Yara Tous", "brand": "Lattafa", "tag": "MUJER", "usd": 32, "desc": "Tropical, dulce y floral blanco.", "cat": "mujer", "img": "YARA_TOUS.avif", "stock": false},
   {"id": 20, "name": "Yara Moi", "brand": "Lattafa", "tag": "MUJER", "usd": 36, "desc": "Amaderado, floral blanco y especiado.", "cat": "mujer", "img": "YARA_MOI.avif", "stock": false},
   {"id": 21, "name": "Yara", "brand": "Lattafa", "tag": "MUJER", "usd": 41, "desc": "Dulce, avainillado y atalcado.", "cat": "mujer", "img": "YARA_ROSA.avif", "stock": false},
   {"id": 22, "name": "Eclaire", "brand": "Lattafa", "tag": "MUJER", "usd": 62, "desc": "Dulce, avainillado, acaramelado y lactónico.", "cat": "mujer", "img": "ECLAIRE.avif", "stock": false},
@@ -997,20 +970,9 @@ function updateCartUI() {
 }
 
 function toggleCart() {
-  const panel = document.getElementById('cartPanel');
-  const overlay = document.getElementById('cartOverlay');
-
-  const abierto = panel.classList.toggle('open');
-  overlay.classList.toggle('open', abierto);
-
-  document.body.classList.toggle('cart-open', abierto);
-
-  if (abierto) {
-    const chatBox = document.getElementById('aiChatBox');
-    if (chatBox) chatBox.style.display = 'none';
-  }
+  document.getElementById('cartPanel').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
 }
-  
 document.getElementById('cartToggleBtn').addEventListener('click', toggleCart);
 document.getElementById('cartCloseBtn').addEventListener('click', toggleCart);
 document.getElementById('cartOverlay').addEventListener('click', toggleCart);
@@ -1069,6 +1031,8 @@ const chatMessages = document.getElementById('aiChatMessages');
 const quickOptions = document.getElementById('aiQuickOptions');
 
 let userPreferences = { genero: '', notas: '', estacion: '', tipo: '' };
+const aiHistory = [];
+let aiBusy = false;
 
 const quizSteps = {
   genero: { title: '1. Género o estilo:', options: ['Hombre', 'Mujer', 'Unisex'] },
@@ -1154,61 +1118,61 @@ function formatAiReply(text) {
 }
 
 async function sendAiMessage(customText = null) {
-  const text = customText || chatInput.value.trim();
-  if (!text) return;
-
+  const text = (customText || chatInput.value).trim();
+  if (!text || aiBusy) return;
+  aiBusy = true;
+  chatSend.disabled = true;
+  chatSend.style.opacity = '0.5';
   if (!customText) {
-    chatMessages.innerHTML += `<div style="background: var(--gold); color: var(--black); padding: 10px 12px; border-radius: 6px; align-self: flex-end; max-width: 85%; font-weight: 500;">${text}</div>`;
+    const bubble = document.createElement('div');
+    bubble.style.cssText = 'background:var(--gold);color:var(--black);padding:10px 12px;border-radius:6px;align-self:flex-end;max-width:85%;font-weight:500;overflow-wrap:anywhere';
+    bubble.textContent = text;
+    chatMessages.appendChild(bubble);
     chatInput.value = '';
   }
   chatMessages.scrollTop = chatMessages.scrollHeight;
-
-  const loadingId = 'loading-' + Date.now();
-  chatMessages.innerHTML += `<div id="${loadingId}" style="background: var(--surface2); color: var(--muted); padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Buscando la fragancia ideal...</div>`;
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-
+  const loading = document.createElement('div');
+  loading.style.cssText = 'background:var(--surface2);color:var(--muted);padding:10px 12px;border-radius:6px;align-self:flex-start';
+  loading.textContent = 'Pensando en una recomendación...';
+  chatMessages.appendChild(loading);
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: text,
+        history: aiHistory.slice(-12),
         catalog: {
           products: products.map(p => ({ name: p.name, brand: p.brand, desc: p.desc, cat: p.cat, stock: p.stock !== false, priceARS: arsPrice(p.usd) })),
-          decants: decants.map(d => ({ name: d.name, brand: d.brand, stock: d.stock !== false, priceARS: d.ars }))
+          decants: decants.map(d => ({ name: d.name, brand: d.brand, cat: 'decant', stock: d.stock !== false, priceARS: d.ars }))
         }
       })
     });
-    
     const data = await res.json();
-    document.getElementById(loadingId).remove();
-
-    if (data.reply) {
-      chatMessages.innerHTML += `
-        <div style="
-          background: var(--surface2);
-          color: var(--cream);
-          padding: 12px 14px;
-          border: 1px solid var(--border);
-          border-radius: 8px;
-          align-self: flex-start;
-          max-width: 90%;
-          overflow-wrap: anywhere;
-          line-height: 1.8;
-          font-size: 12px;
-        ">${formatAiReply(data.reply)}</div>`;
-    } else {
-      chatMessages.innerHTML += `<div style="background: var(--surface2); color: #e05555; padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Ocurrió un error al consultar. Intentá nuevamente.</div>`;
-    }
+    if (!res.ok || !data.reply) throw new Error(data.error || 'No pude responder ahora.');
+    const answer = document.createElement('div');
+    answer.style.cssText = 'background:var(--surface2);color:var(--cream);padding:12px 14px;border:1px solid var(--border);border-radius:8px;align-self:flex-start;max-width:90%;overflow-wrap:anywhere;line-height:1.8;font-size:12px';
+    answer.textContent = data.reply;
+    answer.style.whiteSpace = 'pre-wrap';
+    chatMessages.appendChild(answer);
+    aiHistory.push({ role: 'user', text }, { role: 'model', text: data.reply });
+    if (aiHistory.length > 24) aiHistory.splice(0, aiHistory.length - 24);
   } catch (err) {
-    document.getElementById(loadingId).remove();
-    chatMessages.innerHTML += `<div style="background: var(--surface2); color: #e05555; padding: 10px 12px; border-radius: 6px; align-self: flex-start;">Error de conexión.</div>`;
+    const errorBubble = document.createElement('div');
+    errorBubble.style.cssText = 'background:var(--surface2);color:#e05555;padding:10px 12px;border-radius:6px;align-self:flex-start';
+    errorBubble.textContent = err.message || 'Error de conexión. Intentá de nuevo.';
+    chatMessages.appendChild(errorBubble);
+  } finally {
+    loading.remove();
+    aiBusy = false;
+    chatSend.disabled = false;
+    chatSend.style.opacity = '1';
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
-  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 chatSend.addEventListener('click', () => sendAiMessage());
-chatInput.addEventListener('keypress', (e) => {
+chatInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') sendAiMessage();
 });
 </script>
