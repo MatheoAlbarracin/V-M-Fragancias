@@ -1133,7 +1133,7 @@ async function sendAiMessage(customText = null) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
   const loading = document.createElement('div');
   loading.style.cssText = 'background:var(--surface2);color:var(--muted);padding:10px 12px;border-radius:6px;align-self:flex-start';
-  loading.textContent = 'Pensando en una recomendación...';
+  loading.textContent = '✨ Estamos preparando tu recomendación. La respuesta puede tardar unos segundos, ¡gracias por esperar!';
   chatMessages.appendChild(loading);
   try {
     const res = await fetch('/api/chat', {
