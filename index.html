@@ -733,10 +733,10 @@ let USD = 1600;
 const products = [
   { id:1,  name:'9PM',                        brand:'Afnan',          tag:'HOMBRE', usd:41.00 , desc:'Oriental amaderado con notas de bergamota, cardamomo y pachulí. Ideal para la noche.',   cat:'hombre', img:'9PM.jpeg', stock: false },
   { id:2,  name:'9PM Elixir',               brand:'Afnan',          tag:'HOMBRE', usd:56.50 , desc:'Versión más intensa y oscura del 9PM clásico. Oud, almizcle y madera de cachemira.',    cat:'hombre', img:'9PM_Elixir.jpeg', stock: true},
-  { id:3,  name:'9PM Night Out',            brand:'Afnan',          tag:'HOMBRE', usd:72.50 , desc:'Versión fresca y vibrante del 9PM. Perfecto para salidas nocturnas.',                    cat:'hombre', img:'9PM_NIGHT_OUT.jpeg', stock: true },
+  { id:3,  name:'9PM Night Out',            brand:'Afnan',          tag:'HOMBRE', usd:72.50 , desc:'Versión fresca y vibrante del 9PM. Perfecto para salidas nocturnas.',                    cat:'hombre', img:'9PM_NIGHT_OUT.jpeg', stock: false },
   { id:4,  name:'Odyssey Mandarin Sky Elixir', brand:'Odyssey',          tag:'UNISEX', usd:55.00 , desc:'Cítrico y especiado con notas de mandarina, pimienta rosa y sándalo cremoso.',          cat:'unisex', img:'MANDARIN_SKY_ELIXIR.jpeg', stock: true },
   { id:5,  name:'Hawas For Him',               brand:'Rasasi',         tag:'HOMBRE', usd:36.00 , desc:'Acuático marino con cardamomo, menta y madera. Fresco, elegante y duradero.',           cat:'hombre', img:'HAWAS_FORHIM.jpeg', stock: false },
-  { id:6,  name:'Hawas Malibu',                brand:'Rasasi',         tag:'HOMBRE', usd:45.50 , desc:'Versión tropical del Hawas. Notas de coco, brisa marina y frutas exóticas.',             cat:'hombre', img:'HAWAS_MALIBU.jpg' , stock: true },
+  { id:6,  name:'Hawas Malibu',                brand:'Rasasi',         tag:'HOMBRE', usd:45.50 , desc:'Versión tropical del Hawas. Notas de coco, brisa marina y frutas exóticas.',             cat:'hombre', img:'HAWAS_MALIBU.jpg' , stock: false },
   { id:7,  name:'Lattafa The Kingdom',         brand:'Lattafa',        tag:'HOMBRE', usd:41.60 , desc:'Oud amaderado con especias orientales. Imponente, cálido y con gran proyección.',       cat:'hombre', img:'THE_KING.jpg', stock: true },
   { id:8,  name:'Honor And Glory',             brand:'Lattafa',        tag:'HOMBRE', usd:32.00 , desc:'Fresco y especiado con bergamota, lavanda y base amaderada. Versátil para el día.',     cat:'hombre', img:'HONOR_AND_GL.jpg', stock: false },
   { id:9,  name:'Al Haramain Amber Oud Gold',  brand:'Al Haramain',    tag:'UNISEX', usd:75.50 , desc:'Ámbar y oud en su máxima expresión. Rico, cálido y con una estela interminable.',        cat:'unisex', img:'AMBER_OUD_GO.jpg', stock: false  },
@@ -749,7 +749,7 @@ const products = [
   { id:16, name:'Odyssey Aqua',                brand:'Odyssey',        tag:'UNISEX', usd:39.70 , desc:'Acuático fresco con notas de bergamota, algas marinas y base amaderada.',               cat:'unisex', img:'ODYSSEY_AQUA.avif', stock: true },
   {"id": 17, "name": "Odyssey Mandarin Sky", "brand": "Armaf", "tag": "HOMBRE", "usd": 41.0, "desc": "Cítrico, dulce y acaramelado.", "cat": "hombre", "img": "MANDARIN_SKY.avif", "stock": false},
   {"id": 18, "name": "Yara Candy", "brand": "Lattafa", "tag": "MUJER", "usd": 41, "desc": "Avainillado, afrutado y dulce.", "cat": "mujer", "img": "YARA_CANDY.avif", "stock": false},
-  {"id": 19, "name": "Yara Tous", "brand": "Lattafa", "tag": "MUJER", "usd": 32, "desc": "Tropical, dulce y floral blanco.", "cat": "mujer", "img": "YARA_TOUS.avif", "stock": false},
+  {"id": 19, "name": "Yara Tous", "brand": "Lattafa", "tag": "MUJER", "usd": 32, "desc": "Tropical, dulce y floral blanco.", "cat": "mujer", "img": "YARA_TOUS.avif", "stock": true},
   {"id": 20, "name": "Yara Moi", "brand": "Lattafa", "tag": "MUJER", "usd": 36, "desc": "Amaderado, floral blanco y especiado.", "cat": "mujer", "img": "YARA_MOI.avif", "stock": false},
   {"id": 21, "name": "Yara", "brand": "Lattafa", "tag": "MUJER", "usd": 41, "desc": "Dulce, avainillado y atalcado.", "cat": "mujer", "img": "YARA_ROSA.avif", "stock": false},
   {"id": 22, "name": "Eclaire", "brand": "Lattafa", "tag": "MUJER", "usd": 62, "desc": "Dulce, avainillado, acaramelado y lactónico.", "cat": "mujer", "img": "ECLAIRE.avif", "stock": false},
@@ -761,13 +761,25 @@ const products = [
   {"id": 28, "name": "9AM Pour Femme", "brand": "Afnan", "tag": "MUJER", "usd": 46, "desc": "Próximamente: descripción olfativa.", "cat": "mujer", "img": "9AM_POUR_FEMME.avif", "stock": false},
   {"id": 29, "name": "Vulcan Feu", "brand": "French Avenue", "tag": "UNISEX", "usd": 62, "desc": "Próximamente: descripción olfativa.", "cat": "unisex", "img": "VULCAN_FEU.avif", "stock": false},
   {"id": 30, "name": "Bharara King", "brand": "Bharara", "tag": "HOMBRE", "usd": 74, "desc": "Próximamente: descripción olfativa.", "cat": "hombre", "img": "BHARARA_KING.avif", "stock": false},
+
+  { id:31, name:'Club de Nuit Intense Man', brand:'Armaf', tag:'HOMBRE', usd:null, desc:'Cítrico y afrutado, con matices de cuero, humo y maderas. Masculino, elegante e intenso.', cat:'hombre', img:'CLUB_DE_NUIT_INTENSE.avif', stock:false },
+  { id:32, name:'Liquid Brun', brand:'French Avenue', tag:'UNISEX', usd:65, desc:'Dulce y cálido, con vainilla, canela, especias y matices ambarados.', cat:'unisex', img:'LIQUID_BRUN.avif', stock:true },
+  {"id": 33, "name": "Hawas Kobra", "brand": "Rasasi", "tag": "HOMBRE", "usd": 47, "desc": "Cítrico y fresco, con especias vibrantes, matices verdes y un fondo amaderado.", "cat": "hombre", "img": "HAWAS_KOBRA.avif", "stock": false},
+  {"id": 34, "name": "Club de Nuit Iconic Extrait de Parfum", "brand": "Armaf", "tag": "HOMBRE", "usd": 55, "desc": "Amaderado y ambarado, con cítricos, especias frescas y un fondo aromático.", "cat": "hombre", "img": "CLUB_DE_NUIT_ICONIC_EXTRAIT.avif", "stock": false},
+  {"id": 35, "name": "Art of Universe", "brand": "Lattafa", "tag": "UNISEX", "usd": 58, "desc": "Cítrico y afrutado, con un carácter fresco especiado, dulce y almizclado.", "cat": "unisex", "img": "ART_OF_UNIVERSE.avif", "stock": false},
+  {"id": 36, "name": "Odyssey Mega Man", "brand": "Armaf", "tag": "HOMBRE", "usd": 41, "desc": "Cítrico y aromático, con especias frescas, matices amaderados y un toque dulce.", "cat": "hombre", "img": "ODYSSEY_MEGA_MAN.avif", "stock": false},
+  {"id": 37, "name": "9PM Rebel", "brand": "Afnan", "tag": "UNISEX", "usd": 70, "desc": "Afrutado y dulce, con maderas, matices tropicales y un fondo cálido.", "cat": "unisex", "img": "9PM_REBEL.avif", "stock": false},
+  {"id": 38, "name": "Ishq Al Shuyukh Silver", "brand": "Lattafa", "tag": "UNISEX", "usd": 38, "desc": "Dulce y afrutado, con cítricos, maderas y especias frescas.", "cat": "unisex", "img": "ISHQ_AL_SHUYUKH_SILVER.avif", "stock": false},
+  {"id": 39, "name": "Hawas Elixir", "brand": "Rasasi", "tag": "UNISEX", "usd": 46, "desc": "Avainillado y aromático, con acordes verdes, dulces, especiados y un toque de chocolate.", "cat": "unisex", "img": "HAWAS_ELIXIR.avif", "stock": false},
+  {"id": 40, "name": "Tropical Vibe", "brand": "Rayhaan", "tag": "UNISEX", "usd": 42, "desc": "Tropical, dulce y afrutado, con coco, maderas y matices cálidos.", "cat": "unisex", "img": "TROPICAL_VIBE.avif", "stock": false},
+  {"id": 41, "name": "Hawas Chrome", "brand": "Rasasi", "tag": "UNISEX", "usd": 64, "desc": "Afrutado y dulce, con facetas tropicales, almizcladas, frescas y acuáticas.", "cat": "unisex", "img": "HAWAS_CHROME.avif", "stock": false},
 ];
 
 function arsPrice(usd) { return usd == null ? null : Math.round(usd * USD); }
 
 const decants = [
   { id:101, name:'9PM',                brand:'Afnan',   ars: 4499, stock: true },
-  { id:102, name:'9PM Night Out',      brand:'Afnan',   ars: 7499, stock: true },
+  { id:102, name:'9PM Night Out',      brand:'Afnan',   ars: 7499, stock: false },
   { id:103, name:'Hawas Ice',          brand:'Rasasi',  ars: 5599, stock: true },
   { id:104, name:'Lattafa The Kingdom', brand:'Lattafa', ars: 4699, stock: true },
   { id:105, name:'Honor And Glory', brand:'Lattafa', ars: 3799, stock: true },
