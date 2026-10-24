@@ -745,7 +745,7 @@ const products = [
   { id:12, name:'Fakhar Silver',               brand:'Lattafa',        tag:'HOMBRE', usd:38.00 , desc:'Fresco y limpio con bergamota, lavanda y cedro. Ideal para el día a día.',              cat:'hombre', img:'FAKHAR_SILVER.jpg', stock: false },
   { id:13, name:'Qaed Al Fursan',               brand:'Lattafa',        tag:'UNISEX', usd:33.00 , desc:'Oriental especiado con notas de azafrán, rosa y oud. Misterioso y envolvente.',         cat:'unisex', img:'QAED.jpg', stock: false },
   { id:14, name:'Maison Alhambra Salvo Elixir',brand:'Maison Alhambra',tag:'HOMBRE', usd:36.00 , desc:'Amaderado intenso con notas de vetiver, cedro y almizcle. Elegante y moderno.',        cat:'hombre', img:'SALVO_ELIXIR.jpg', stock: false },
-  { id:15, name:'Hawas Ice',                   brand:'Rasasi',         tag:'HOMBRE', usd:52.00 , desc:'Versión helada del Hawas. Notas de menta ártica, almizcle marino y madera fría.',       cat:'hombre', img:'HAWAS_ICE.avif', stock: true},
+  { id:15, name:'Hawas Ice',                   brand:'Rasasi',         tag:'HOMBRE', usd:52.00 , desc:'Versión helada del Hawas. Notas de menta ártica, almizcle marino y madera fría.',       cat:'hombre', img:'HAWAS_ICE.avif', stock: false},
   { id:16, name:'Odyssey Aqua',                brand:'Odyssey',        tag:'UNISEX', usd:39.70 , desc:'Acuático fresco con notas de bergamota, algas marinas y base amaderada.',               cat:'unisex', img:'ODYSSEY_AQUA.avif', stock: true },
   {"id": 17, "name": "Odyssey Mandarin Sky", "brand": "Armaf", "tag": "HOMBRE", "usd": 41.0, "desc": "Cítrico, dulce y acaramelado.", "cat": "hombre", "img": "MANDARIN_SKY.avif", "stock": false},
   {"id": 18, "name": "Yara Candy", "brand": "Lattafa", "tag": "MUJER", "usd": 41, "desc": "Avainillado, afrutado y dulce.", "cat": "mujer", "img": "YARA_CANDY.avif", "stock": false},
@@ -778,7 +778,7 @@ const products = [
 function arsPrice(usd) { return usd == null ? null : Math.round(usd * USD); }
 
 const decants = [
-  { id:101, name:'9PM',                brand:'Afnan',   ars: 4499, stock: true },
+  { id:101, name:'9PM',                brand:'Afnan',   ars: 4499, stock: false },
   { id:102, name:'9PM Night Out',      brand:'Afnan',   ars: 7499, stock: true },
   { id:103, name:'Hawas Ice',          brand:'Rasasi',  ars: 5599, stock: true },
   { id:104, name:'Lattafa The Kingdom', brand:'Lattafa', ars: 4699, stock: true },
@@ -790,6 +790,7 @@ const decants = [
   { id:110, name:'Asad Bourbon', brand:'Lattafa', ars: 6499, stock: true },
   { id:111, name:'9PM Elixir', brand:'Afnan', ars: 6099, stock: true },
   { id:112, name:'Odyssey Aqua', brand:'Odyssey', ars: 4499, stock: true },
+  { id:112, name:'Hawas Malibu', brand:'Rasasi', ars: 4999, stock: true },
 ];
 
 let cart = [];
