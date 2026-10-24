@@ -40,15 +40,26 @@
 }
 
 /* Bajamos el menú para que no tape la barra */
-nav {
-  top: 34px;
+/* Logo tipográfico: no depende de logoNav.png y evita letras superpuestas */
+.nav-brand { display:flex; flex-direction:column; align-items:center; width:max-content; color:#c9a84c; line-height:1; }
+.nav-brand-main { font-family:"Cormorant Garamond", Georgia, serif; font-size:39px; font-weight:400; letter-spacing:-1px; white-space:nowrap; }
+.nav-brand-sub { font-family:"Inter",sans-serif; font-size:7px; letter-spacing:2.2px; margin-top:2px; white-space:nowrap; }
+.nav-logo-img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 56px;
+  object-fit: contain;
+  object-position: left center;
 }
-  .nav-logo-img {
-    height: 45px;
-    width: auto;
-    object-fit: contain;
-    display: block;
-  }
+nav > a:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 0 0 110px;
+  min-width: 110px;
+  text-decoration: none;
+}
   
   :root {
     --gold: #c9a84c;
@@ -115,12 +126,13 @@ nav {
   /* ── NAV ── */
   nav {
     position: fixed;
-    top: 0; left: 0; right: 0;
+    top: 34px; left: 0; right: 0;
     z-index: 100;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 48px;
+    padding: 12px 48px;
+    min-height: 82px;
     background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
   }
 
@@ -482,7 +494,10 @@ nav {
   .toast span { color: var(--gold); }
 
   @media (max-width: 768px) {
-    nav { padding: 20px 24px; }
+    nav { padding: 12px 24px; min-height: 72px; }
+    nav > a:first-child { flex-basis: 80px; min-width: 80px; }
+    .nav-brand-main { font-size:32px; }
+    .nav-brand-sub { font-size:6px; letter-spacing:1.8px; }
     .nav-links { display: none; }
     section { padding: 72px 24px; }
     #nosotros { grid-template-columns: 1fr; gap: 40px; padding: 72px 24px; }
@@ -558,7 +573,7 @@ nav {
 <!-- NAV -->
 <nav>
   <a href="#">
-    <img src="logoNav.png" alt="V&M Fragancias" class="nav-logo-img">
+    <span class="nav-brand" aria-label="V&M Fragancias"><span class="nav-brand-main">V&amp;M</span><span class="nav-brand-sub">FRAGANCIAS</span></span>
   </a>
   <ul class="nav-links">
     <li><a href="#catalogo">Catálogo</a></li>
